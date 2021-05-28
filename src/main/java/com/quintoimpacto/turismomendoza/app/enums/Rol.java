@@ -11,6 +11,6 @@ package com.quintoimpacto.turismomendoza.app.enums;
  */
 public enum Rol {
     
-    ADMIN, CONSUMIDOR, PRESTADOR
+    ADMIN, USUARIO
     
 }

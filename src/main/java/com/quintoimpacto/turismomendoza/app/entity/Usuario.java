@@ -9,7 +9,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import lombok.Data;
@@ -35,10 +35,10 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     private Rol rol;
     
-    @OneToMany
+    @ManyToMany
     private List<Evento> misEventos;
 
-    @OneToMany
+    @ManyToMany
     private List<Evento> eventosVisitados;
     
 }
