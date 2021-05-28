@@ -35,7 +35,3 @@ server:
         http-only: true
       tracking-modes:
       - cookie
-      
-
-#client_id: 605712538914-kqhph46e6edabpcoolih52t3aphif9hd.apps.googleusercontent.com
-#secrect_client: TgymKYQtQfpgoSVL15LuvpO3
