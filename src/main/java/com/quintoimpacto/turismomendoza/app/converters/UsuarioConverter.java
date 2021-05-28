@@ -9,7 +9,9 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component("UsuarioConverter")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class UsuarioConverter extends Converter<UsuarioModel, Usuario>{
 
