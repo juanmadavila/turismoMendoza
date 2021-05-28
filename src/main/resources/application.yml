@@ -25,20 +25,6 @@ spring:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect      
   thymeleaf:
     cache: false 
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: 605712538914-kqhph46e6edabpcoolih52t3aphif9hd.apps.googleusercontent.com
-            client-secret: TgymKYQtQfpgoSVL15LuvpO3
-            scope:
-            - email
-            - profile
-          facebook:
-#            client-id: 164656895404497
-            client-id: 288046759607678
-            client-secret: 43c07cfd0d37c82f56e9ef4f823a5a30
 server:
   error:
     whitelabel:
