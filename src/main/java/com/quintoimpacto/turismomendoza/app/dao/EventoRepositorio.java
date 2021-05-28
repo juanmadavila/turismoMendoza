@@ -12,13 +12,13 @@ import org.springframework.data.repository.query.Param;
 @Repository
 public interface EventoRepositorio extends JpaRepository<Evento, String> {
 
-    @Query("SELECT e FROM Evento e")
-    public Page<Evento> findAll(Pageable pageable);
+//    @Query("SELECT e FROM Evento e")
+//    public Page<Evento> findAll(Pageable pageable);
+//
+//    @Query("SELECT e FROM Evento e WHERE e.nombre LIKE :nombre")
+//    public Page<Evento> findAll(Pageable pageable, @Param("nombre") String nombre);
 
-    @Query("SELECT e FROM Evento e WHERE e.nombre LIKE :nombre")
-    public Page<Evento> findAll(Pageable pageable, @Param("nombre") String nombre);
-
-    @Query("SELECT e FROM Evento e WHERE e.fecha LIKE :fecha")
-    public Page<Evento> findAllByFecha(Pageable pageable, @Param("fecha") Date fecha);
+//    @Query("SELECT e FROM Evento e WHERE e.fecha LIKE :fecha")
+//    public Page<Evento> findAllByFecha(Pageable pageable, @Param("fecha") Date fecha);
 
 }

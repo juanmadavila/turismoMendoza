@@ -29,7 +29,8 @@ public class Evento {
 
     private String nombre;
     private String descripcion;
-    private String ubicacion;
+    private String lat;
+    private String lon;
     private Boolean habilitado;
     
     @Temporal(TemporalType.DATE)

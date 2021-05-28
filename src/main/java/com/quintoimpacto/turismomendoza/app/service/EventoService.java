@@ -43,18 +43,18 @@ public class EventoService {
         return eventoRepositorio.findById(id).orElse(null);
     }
 
-    public Page<Evento> findAll(Pageable paginable) {
-        return eventoRepositorio.findAll(paginable);
-    }
-
-    public Page<Evento> findAll(Pageable paginable, String q) {
-        return eventoRepositorio.findAll(paginable, "%" + q + "%");
-    }
-
-    public Page<Evento> findAllByFecha(Pageable paginable, String fechaGuiones) throws ParseException {
-        Date fecha = Fecha.parseFechaGuiones(fechaGuiones);
-        return eventoRepositorio.findAllByFecha(paginable, fecha);
-    }
+//    public Page<Evento> findAll(Pageable paginable) {
+//        return eventoRepositorio.findAll(paginable);
+//    }
+//
+//    public Page<Evento> findAll(Pageable paginable, String q) {
+//        return eventoRepositorio.findAll(paginable, "%" + q + "%");
+//    }
+//
+//    public Page<Evento> findAllByFecha(Pageable paginable, String fechaGuiones) throws ParseException {
+//        Date fecha = Fecha.parseFechaGuiones(fechaGuiones);
+//        return eventoRepositorio.findAllByFecha(paginable, fecha);
+//    }
     
     private void validar(EventoModel model) throws WebException {
 

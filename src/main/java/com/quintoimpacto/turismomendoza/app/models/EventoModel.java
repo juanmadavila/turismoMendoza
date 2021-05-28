@@ -15,7 +15,8 @@ public class EventoModel implements Serializable {
     private String id;
     private String nombre;
     private String descripcion;
-    private String ubicacion;
+    private String lat;
+    private String lon;
     private Date fecha;
     private TipoDeEvento tipoDeEvento;
     private Usuario anfitrion;
