@@ -2,21 +2,44 @@ package com.quintoimpacto.turismomendoza.app.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.quintoimpacto.turismomendoza.app.dao.UsuarioRepositorio;
 import com.quintoimpacto.turismomendoza.app.entity.Usuario;
-
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @Service
-public interface UsuarioService {
-	
-	public Iterable<Usuario> getAllUser(); 
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
+public class UsuarioService implements UserDetailsService{
 
-	public List<Usuario> findAll();
-	
-	public void save(Usuario usuario);
-	
-	public Usuario findOne(Long id);
-	
-	public void delete(Long id);
+    private final UsuarioRepositorio usuarioRepositorio;
+
+    @Transactional
+    public void save(Usuario usuario) {
+        //cambiarlo a modelos y convertidores
+        usuarioRepositorio.save(usuario);
+    }
+
+    @Transactional
+    public void delete(String id) {
+        usuarioRepositorio.deleteById(id);
+    }
+
+    public Usuario findOne(String id) {
+        return usuarioRepositorio.findById(id).orElse(null);
+    }
+
+    public List<Usuario> findAll() {
+        return (List<Usuario>) usuarioRepositorio.findAll();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String string) throws UsernameNotFoundException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
