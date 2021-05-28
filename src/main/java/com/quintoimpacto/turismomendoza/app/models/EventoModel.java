@@ -4,6 +4,7 @@ import com.quintoimpacto.turismomendoza.app.entity.Usuario;
 import com.quintoimpacto.turismomendoza.app.enums.TipoDeEvento;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 import lombok.Data;
 
 @Data
@@ -17,6 +18,7 @@ public class EventoModel implements Serializable {
     private String ubicacion;
     private Date fecha;
     private TipoDeEvento tipoDeEvento;
-    private Usuario usuario;
+    private Usuario anfitrion;
+    private Set<Usuario> visitantes;
 
 }

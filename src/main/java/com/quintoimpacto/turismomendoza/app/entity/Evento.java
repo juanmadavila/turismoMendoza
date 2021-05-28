@@ -2,17 +2,17 @@ package com.quintoimpacto.turismomendoza.app.entity;
 
 import com.quintoimpacto.turismomendoza.app.enums.TipoDeEvento;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -27,16 +27,11 @@ public class Evento {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
-//    @NotEmpty
     private String nombre;
-
-//    @NotEmpty
     private String descripcion;
-
-//    @NotEmpty
     private String ubicacion;
-
-//    @NotNull
+    private Boolean habilitado;
+    
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private Date fecha;
@@ -45,6 +40,9 @@ public class Evento {
     private TipoDeEvento tipoDeEvento;
     
     @ManyToOne
-    private Usuario usuario;
+    private Usuario anfitrion;
+    
+    @ManyToMany
+    private List<Usuario> visitantes;
     
 }
