@@ -21,51 +21,42 @@
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <link href="css/sb-admin-2.css" rel="stylesheet">
     <script>
-
         let map;
-        const mendoza = { lat: -32.8933144, lng: -68.8490985 };
+        var markers = [
+            ['Antu', -32.8564736, -68.8259072,"hola"],
+            ['Mendoza', -32.8933144, -68.8490985, "holiiiss"]
+        ];
 
         function initMap() {
             map = new google.maps.Map(document.getElementById("map"), {
                 center: { lat: -32.8933144, lng: -68.8490985 },
-                zoom: 8,
+                zoom: 15,
             });
-            let marcadorMendoza = new google.maps.Marker({
-                position: mendoza,
-                map: map,
-            });
-            infoWindow = new google.maps.InfoWindow();
-            const locationButton = document.createElement("button");
-            locationButton.textContent = "Ubicacion Actual";
-            locationButton.classList.add("custom-map-control-button");
-            map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
-            locationButton.addEventListener("click", () => {
-                // Try HTML5 geolocation.
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            const pos = {
-                                lat: position.coords.latitude,
-                                lng: position.coords.longitude,
-                            };
-                            let marcadorUsuario = new google.maps.Marker({
-                                position: pos,
-                                map: map,
-                            });
-                            infoWindow.setPosition(pos);
-                            infoWindow.setContent("Ubicacion Encontrada.");
-                            infoWindow.open(map);
-                            map.setCenter(pos);
-                        },
-                        () => {
-                            handleLocationError(true, infoWindow, map.getCenter());
-                        }
-                    );
-                } else {
-                    // Browser doesn't support Geolocation
-                    handleLocationError(false, infoWindow, map.getCenter());
-                }
-            });
+
+            var infoWindow = new google.maps.InfoWindow();
+            for (i = 0; i < markers.length; i++) {
+                var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
+                marker = new google.maps.Marker({
+                    position: position,
+                    map: map,
+                    title: markers[i][0],
+                })
+                const infoWindowContent =
+                    '<div class="info_content">' +
+                    `<h3>${marker.title}</h3>` +
+                    `<p>${markers[i][3]}</p>` + 
+                    '</div>'
+                    ;
+                console.log(marker);
+                google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                    return function () {
+                        infoWindow.setContent(infoWindowContent);
+                        infoWindow.open(map, marker);
+                    }
+                })(marker, i));
+
+                // Center the map to fit all markers on the screen
+            }
         }
 
         function handleLocationError(browserHasGeolocation, infoWindow, pos) {
