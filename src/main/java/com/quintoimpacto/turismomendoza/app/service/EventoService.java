@@ -36,6 +36,7 @@ public class EventoService {
     }
 
     public Evento findById(String id) {
+        if (id == null) return null;
         return eventoRepositorio.findById(id).orElse(null);
     }
 

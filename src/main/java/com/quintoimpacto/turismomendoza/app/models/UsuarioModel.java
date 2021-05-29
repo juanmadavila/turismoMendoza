@@ -16,6 +16,7 @@ public class UsuarioModel implements Serializable {
     private String name;
     private String email;
     private Boolean habilitado;
+    private String photoUrl;
     private Date alta;
     private Rol rol;
     private List<EventoModel> eventosVisitados;

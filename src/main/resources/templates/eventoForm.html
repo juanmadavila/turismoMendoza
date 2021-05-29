@@ -74,9 +74,9 @@
                 </div>
                 <div class="form-group mt-3">
                     <label>Tipo de evento</label>
-                    <select class="form-select" aria-label="Default select example">
+                    <select class="form-select" aria-label="Default select example" name="tipoDeEvento">
                         <option th:each="tipoEvento : ${T(com.quintoimpacto.turismomendoza.app.enums.TipoDeEvento).values()}" 
-                                th:field="*{tipoDeEvento}" th:value="*{tipoDeEvento}" th:text="${tipoEvento.alias}"></option>
+                                th:value="${tipoEvento}" th:text="${tipoEvento.alias}"></option>
                     </select>
                 </div>
                 <div class="form-group mt-3">

@@ -2,6 +2,7 @@ package com.quintoimpacto.turismomendoza.app.controllers;
 
 import com.quintoimpacto.turismomendoza.app.converters.UsuarioConverter;
 import com.quintoimpacto.turismomendoza.app.entity.Usuario;
+import com.quintoimpacto.turismomendoza.app.enums.TipoDeEvento;
 import com.quintoimpacto.turismomendoza.app.error.WebException;
 import com.quintoimpacto.turismomendoza.app.models.EventoModel;
 import com.quintoimpacto.turismomendoza.app.models.UsuarioModel;
@@ -10,12 +11,12 @@ import com.quintoimpacto.turismomendoza.app.utils.Fecha;
 import com.quintoimpacto.turismomendoza.app.utils.Texts;
 import static com.quintoimpacto.turismomendoza.app.utils.Texts.EVENTO_FORM_LABEL;
 import static com.quintoimpacto.turismomendoza.app.utils.Texts.EVENTO_LABEL;
+import static com.quintoimpacto.turismomendoza.app.utils.Texts.REDIRECT_LABEL;
 import java.text.ParseException;
 import java.util.Date;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -45,7 +46,8 @@ public class EventoController {
     @PostMapping("/save")
     public String save(HttpSession session, @Validated @ModelAttribute(EVENTO_LABEL) EventoModel eventoModel,
             BindingResult result, ModelMap modelo,
-            @RequestParam String fecha) throws ParseException {
+            @RequestParam String fecha, 
+            @RequestParam TipoDeEvento tipoDeEvento) throws ParseException {
         
         Usuario usuario = (Usuario) session.getAttribute("usuariosession");
         modelo.put("usuario", usuario);
@@ -59,15 +61,16 @@ public class EventoController {
                 UsuarioModel usuarioModel = usuarioConverter.entityToModel(usuario);
                 eventoModel.setAnfitrion(usuarioModel);
                 eventoModel.setFecha(fechaDate);
+                eventoModel.setTipoDeEvento(tipoDeEvento);
                 eventoService.save(eventoModel);
-                return Texts.INDEX_LABEL;
+                return REDIRECT_LABEL;
             
         } catch (WebException e) {
             loadModel(modelo, eventoModel, "update");
             modelo.addAttribute("error", e.getMessage());
         } catch (Exception e) {
             loadModel(modelo, eventoModel, "update");
-            modelo.addAttribute("error", "Ocurrió un error inesperado.");
+            modelo.addAttribute("error", e.getMessage());
         }
         
 
