@@ -11,6 +11,7 @@ import com.quintoimpacto.turismomendoza.app.dao.UsuarioRepositorio;
 import com.quintoimpacto.turismomendoza.app.entity.Usuario;
 import com.quintoimpacto.turismomendoza.app.enums.Rol;
 import com.quintoimpacto.turismomendoza.app.models.UsuarioModel;
+import com.quintoimpacto.turismomendoza.app.oauth.CustomOauth2User;
 import java.util.ArrayList;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +27,16 @@ public class UsuarioService implements UserDetailsService{
     private final UsuarioConverter usuarioConverter;
     
     @Transactional
-    public void save(Usuario usuario) {
+    public void save(CustomOauth2User oauth2User) {
         
-        
+        Usuario usuario = new Usuario();
+        usuario.setEmail(oauth2User.getEmail());
+        usuario.setName(oauth2User.getName());
+        usuario.setPhotoUrl(oauth2User.getPhoto());
+        usuario.setRol(Rol.USUARIO);
+        usuario.setAlta(new Date());
+        usuario.setHabilitado(true);
+        usuario.setEventosVisitados(new ArrayList<>());
         
         usuarioRepositorio.save(usuario);
     }
@@ -42,6 +50,10 @@ public class UsuarioService implements UserDetailsService{
 //        model.setEventosVisitados(new ArrayList<>());
 //        
 //    }
+    
+    public Usuario findByEmail(String email) {
+        return usuarioRepositorio.findByEmail(email);
+    }
     
     @Transactional
     public void delete(String id) {

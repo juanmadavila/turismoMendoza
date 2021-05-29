@@ -44,21 +44,6 @@ public class UsuarioController {
         return "userForm.html";
     }
 
-    @PostMapping("/userForm")
-    public String guardar(@Valid Usuario usuario, BindingResult result, Model model, RedirectAttributes flash,
-            SessionStatus status) {
-
-        if (usuario.getId() != null) {
-            flash.addFlashAttribute("success", "Usuario editado con éxito");
-
-        } else {
-            flash.addFlashAttribute("success", "Usuario creado con éxito");
-        }
-        usuarioService.save(usuario);
-        status.setComplete();
-        return "redirect:userList";
-    }
-
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable String id, RedirectAttributes flash) {
 

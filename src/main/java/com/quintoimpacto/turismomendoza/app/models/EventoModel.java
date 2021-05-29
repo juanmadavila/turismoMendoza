@@ -19,7 +19,7 @@ public class EventoModel implements Serializable {
     private String lon;
     private Date fecha;
     private TipoDeEvento tipoDeEvento;
-    private Usuario anfitrion;
-    private Set<Usuario> visitantes;
+    private UsuarioModel anfitrion;
+    private Set<UsuarioModel> visitantes;
 
 }

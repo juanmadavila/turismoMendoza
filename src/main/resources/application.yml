@@ -1,6 +1,6 @@
 spring:
   datasource: 
-    url: jdbc:mysql://localhost/turismomendozadb?serverTimezone=America/Argentina/Buenos_Aires&useSSL=false
+    url: jdbc:mysql://localhost:3306/turismomendozadb?allowPublicKeyRetrieval=true&useSSL=false&useTimezone=true&serverTimezone=GMT&characterEncoding=UTF-8
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver 
@@ -25,6 +25,20 @@ spring:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect      
   thymeleaf:
     cache: false 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 640542065386-ol4vp99ci9h563op49oqlitru2e95a57.apps.googleusercontent.com
+            client-secret: rcfdvacGRCePUNGSSgzE-vi0
+            scope:
+            - email
+            - profile
+          facebook:
+#            client-id: 164656895404497
+            client-id: 288046759607678
+            client-secret: 43c07cfd0d37c82f56e9ef4f823a5a30
 server:
   error:
     whitelabel:

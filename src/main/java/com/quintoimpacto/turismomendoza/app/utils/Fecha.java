@@ -6,17 +6,17 @@ import java.util.Locale;
 
 public class Fecha {
 
-    public static SimpleDateFormat FECHA = new SimpleDateFormat("yyyy-MM-dd", Locale.forLanguageTag("es"));
+    public static SimpleDateFormat FECHA = new SimpleDateFormat("yyyy-mm-dd", Locale.forLanguageTag("es"));
 
     public static Date parseFechaGuiones(String f) throws java.text.ParseException {
 
-        try {
-            return FECHA.parse(f);
-        } catch (java.text.ParseException ex) {
-            return null;
-        }
+        int anio = Integer.valueOf(f.split("-")[0]);
+        int mes = Integer.valueOf(f.split("-")[1]);
+        int dia = Integer.valueOf(f.split("-")[2]);
+        
+        return new Date(anio-1900, mes-1, dia);
     }
-
+    
     public static String format(Date f) {
         try {
             return FECHA.format(f);

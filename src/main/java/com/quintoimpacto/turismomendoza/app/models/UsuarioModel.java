@@ -18,7 +18,6 @@ public class UsuarioModel implements Serializable {
     private Boolean habilitado;
     private Date alta;
     private Rol rol;
-    private List<Evento> misEventos;
-    private List<Evento> eventosVisitados;
+    private List<EventoModel> eventosVisitados;
 
 }

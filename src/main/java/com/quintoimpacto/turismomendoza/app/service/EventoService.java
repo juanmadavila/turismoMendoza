@@ -3,16 +3,12 @@ package com.quintoimpacto.turismomendoza.app.service;
 import com.quintoimpacto.turismomendoza.app.converters.EventoConverter;
 import com.quintoimpacto.turismomendoza.app.dao.EventoRepositorio;
 import com.quintoimpacto.turismomendoza.app.entity.Evento;
+import com.quintoimpacto.turismomendoza.app.entity.Usuario;
 import com.quintoimpacto.turismomendoza.app.error.WebException;
 import com.quintoimpacto.turismomendoza.app.models.EventoModel;
-import com.quintoimpacto.turismomendoza.app.utils.Fecha;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,11 +21,11 @@ public class EventoService {
 
     @Transactional
     public Evento save(EventoModel model) throws WebException {
-
+        
         validar(model);
 
-        Evento entity = eventoConverter.modelToEntity(model);
-
+        Evento entity = eventoConverter.modelToEntity(model);        
+        
         //Revisar si no se rompe
         if (findById(model.getId()) == null) {
             entity.setHabilitado(true);
@@ -64,10 +60,6 @@ public class EventoService {
 
         if (model.getNombre().isEmpty() || model.getNombre() == null) {
             throw new WebException("El nombre no puede estar vacío.");
-        }
-
-        if (model.getAnfitrion() == null) {
-            throw new WebException("Falta el anfitrión del evento.");
         }
 
     }

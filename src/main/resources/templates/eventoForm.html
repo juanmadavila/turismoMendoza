@@ -55,9 +55,11 @@
                 </form>-->
 
         <div class="container">
-            <form th:action="@{/evento/save}" th:object="${evento}">
-                <input type="text" id="lat" th:field="*{lat}"/>
-                <input type="text" id="lon" th:field="*{lon}"/>
+            <h3 th:text="'Anfitrión: ' + ${usuario.name}"></h3>
+            <form th:action="@{/evento/save}" th:object="${evento}" method="POST">
+                <h5 th:text="${error}"></h5>
+                <input type="hidden" id="lat" th:field="*{lat}"/>
+                <input type="hidden" id="lon" th:field="*{lon}"/>
                 <div class="form-group">
                     <label>Url de Google Maps</label>
                     <input type="text" class="form-control" id="ubicacion" onchange="getCoords()" aria-describedby="emailHelp" placeholder="Url de Google Maps">
@@ -72,14 +74,14 @@
                 </div>
                 <div class="form-group mt-3">
                     <label>Tipo de evento</label>
-                    <select class="form-select" aria-label="Default select example" name="tipoEvento">
+                    <select class="form-select" aria-label="Default select example">
                         <option th:each="tipoEvento : ${T(com.quintoimpacto.turismomendoza.app.enums.TipoDeEvento).values()}" 
-                                th:value="${tipoEvento}" th:text="${tipoEvento.alias}"></option>
+                                th:field="*{tipoDeEvento}" th:value="*{tipoDeEvento}" th:text="${tipoEvento.alias}"></option>
                     </select>
                 </div>
                 <div class="form-group mt-3">
                     <label>Fecha</label>
-                    <input type="date" class="form-control" id="exampleInputPassword1">
+                    <input type="date" name="fecha" class="form-control" id="exampleInputPassword1">
                 </div>
                 <button type="submit" class="btn btn-primary mt-3">Crear</button>
             </form>
