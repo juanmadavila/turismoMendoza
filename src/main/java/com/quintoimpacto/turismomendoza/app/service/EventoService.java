@@ -7,6 +7,8 @@ import com.quintoimpacto.turismomendoza.app.entity.Usuario;
 import com.quintoimpacto.turismomendoza.app.error.WebException;
 import com.quintoimpacto.turismomendoza.app.models.EventoModel;
 import java.util.ArrayList;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,29 +18,30 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class EventoService {
 
-    private final EventoRepositorio eventoRepositorio;
-    private final EventoConverter eventoConverter;
+	private final EventoRepositorio eventoRepositorio;
+	private final EventoConverter eventoConverter;
 
-    @Transactional
-    public Evento save(EventoModel model) throws WebException {
-        
-        validar(model);
+	@Transactional
+	public Evento save(EventoModel model) throws WebException {
 
-        Evento entity = eventoConverter.modelToEntity(model);        
-        
-        //Revisar si no se rompe
-        if (findById(model.getId()) == null) {
-            entity.setHabilitado(true);
-            entity.setVisitantes(new ArrayList<>());
-        }
+		validar(model);
 
-        return eventoRepositorio.save(entity);
-    }
+		Evento entity = eventoConverter.modelToEntity(model);
 
-    public Evento findById(String id) {
-        if (id == null) return null;
-        return eventoRepositorio.findById(id).orElse(null);
-    }
+		// Revisar si no se rompe
+		if (findById(model.getId()) == null) {
+			entity.setHabilitado(true);
+			entity.setVisitantes(new ArrayList<>());
+		}
+
+		return eventoRepositorio.save(entity);
+	}
+
+	public Evento findById(String id) {
+		if (id == null)
+			return null;
+		return eventoRepositorio.findById(id).orElse(null);
+	}
 
 //    public Page<Evento> findAll(Pageable paginable) {
 //        return eventoRepositorio.findAll(paginable);
@@ -52,16 +55,20 @@ public class EventoService {
 //        Date fecha = Fecha.parseFechaGuiones(fechaGuiones);
 //        return eventoRepositorio.findAllByFecha(paginable, fecha);
 //    }
-    
-    private void validar(EventoModel model) throws WebException {
 
-        if (model.getDescripcion().isEmpty() || model.getDescripcion() == null) {
-            throw new WebException("La descripción no puede estar vacía.");
-        }
+	public List<Evento> findAll() {
+		return eventoRepositorio.findAll();
+	}
 
-        if (model.getNombre().isEmpty() || model.getNombre() == null) {
-            throw new WebException("El nombre no puede estar vacío.");
-        }
+	private void validar(EventoModel model) throws WebException {
 
-    }
+		if (model.getDescripcion().isEmpty() || model.getDescripcion() == null) {
+			throw new WebException("La descripción no puede estar vacía.");
+		}
+
+		if (model.getNombre().isEmpty() || model.getNombre() == null) {
+			throw new WebException("El nombre no puede estar vacío.");
+		}
+
+	}
 }
