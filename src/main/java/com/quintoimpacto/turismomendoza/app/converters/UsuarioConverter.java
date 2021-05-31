@@ -7,7 +7,7 @@ import com.quintoimpacto.turismomendoza.app.models.UsuarioModel;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +28,7 @@ public class UsuarioConverter extends Converter<UsuarioModel, Usuario>{
         
         try {
             
-            BeanUtils.copyProperties(entity, model);
+            BeanUtils.copyProperties(model, entity);
             
         } catch (Exception e) {
             throw new WebException("No se pudo convertir de modelo a entidad: " + model.toString());
@@ -44,7 +44,7 @@ public class UsuarioConverter extends Converter<UsuarioModel, Usuario>{
         
         try {
             
-            BeanUtils.copyProperties(model, entity);
+            BeanUtils.copyProperties(entity, model);
             
         } catch (Exception e) {
             throw new WebException("No se pudo convertir de entidad a model: " + entity.toString());
