@@ -22,42 +22,51 @@
         <link href="css/sb-admin-2.css" rel="stylesheet">
 
     </head>
-
+    <style>
+        .mountain {
+            clip-path: polygon(0% 0%, 100% 0%, 100% 6%, 50% 20%, 100% 31%, 50% 40%, 100% 50%, 50% 60%,100% 70%,50% 80%,100% 90%,50% 100%, 0% 100%);
+        }
+        
+        .mountain-map {
+            /*position: absolute;*/
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% -50%);
+        }
+    </style>
     <body id="page-top">
 
         <!-- Page Wrapper -->
         <div id="wrapper">
 
             <!-- Sidebar -->
-            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion mountain" id="accordionSidebar">
 
-                <!-- Sidebar - Brand -->
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-mountain"></i>
                     </div>
-                    <div class="sidebar-brand-text mx-3">Mendoza <sup></sup></div>
+                    <div class="sidebar-brand-text mx-3">Mendoza</div>
                 </a>
 
-                <!-- Divider -->
+<!--                 Sidebar - Brand 
+                 Divider 
                 <hr class="sidebar-divider my-0">
 
-                <!-- Nav Item - Dashboard -->
+                 Nav Item - Dashboard 
                 <li class="nav-item active">
                     <a class="nav-link" href="index.html">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         <span>Dashboard</span></a>
                 </li>
 
-                <!-- Divider -->
+                 Divider 
                 <hr class="sidebar-divider">
 
-                <!-- Heading -->
+                 Heading 
                 <div class="sidebar-heading">
                     Interface
                 </div>
 
-                <!-- Nav Item - Pages Collapse Menu -->
+                 Nav Item - Pages Collapse Menu 
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                        aria-expanded="true" aria-controls="collapseTwo">
@@ -73,7 +82,7 @@
                     </div>
                 </li>
 
-                <!-- Nav Item - Utilities Collapse Menu -->
+                 Nav Item - Utilities Collapse Menu 
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                        aria-expanded="true" aria-controls="collapseUtilities">
@@ -92,15 +101,15 @@
                     </div>
                 </li>
 
-                <!-- Divider -->
+                 Divider 
                 <hr class="sidebar-divider">
 
-                <!-- Heading -->
+                 Heading 
                 <div class="sidebar-heading">
                     Addons
                 </div>
 
-                <!-- Nav Item - Pages Collapse Menu -->
+                 Nav Item - Pages Collapse Menu 
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                        aria-expanded="true" aria-controls="collapsePages">
@@ -121,36 +130,36 @@
                     </div>
                 </li>
 
-                <!-- Nav Item - Charts -->
+                 Nav Item - Charts 
                 <li class="nav-item">
                     <a class="nav-link" href="charts.html">
                         <i class="fas fa-fw fa-chart-area"></i>
                         <span>Charts</span></a>
                 </li>
 
-                <!-- Nav Item - Tables -->
+                 Nav Item - Tables 
                 <li class="nav-item">
                     <a class="nav-link" href="tables.html">
                         <i class="fas fa-fw fa-table"></i>
                         <span>Tables</span></a>
                 </li>
 
-                <!-- Divider -->
+                 Divider 
                 <hr class="sidebar-divider d-none d-md-block">
 
-                <!-- Sidebar Toggler (Sidebar) -->
+                 Sidebar Toggler (Sidebar) 
                 <div class="text-center d-none d-md-inline">
                     <button class="rounded-circle border-0" id="sidebarToggle"></button>
                 </div>
 
-                <!-- Sidebar Message -->
+                 Sidebar Message 
                 <div class="sidebar-card">
                     <img class="sidebar-card-illustration mb-2" src="img/undraw_rocket.svg" alt="">
                     <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components,
                         and more!</p>
                     <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to
                         Pro!</a>
-                </div>
+                </div>-->
 
             </ul>
             <!-- End of Sidebar -->
@@ -326,32 +335,32 @@
 
                             <div class="topbar-divider d-none d-sm-block"></div>
 
+                            <a th:if="${usuario == null}" th:href="@{/oauth2/authorization/google}" class="btn mr-2 d-lg-inline text-gray-600 small mt-3">Sign In</a>
                             <!-- Nav Item - User Information -->
-                            <li class="nav-item dropdown no-arrow">
+                            <li th:if="${usuario != null}" class="nav-item dropdown no-arrow">
+                                <!--<a th:if="${usuario == null}" class="btn">Sign In</a>-->
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span th:if="${usuario != null}" th:text="${usuario.name}" class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
-                                    <button th:if="${usuario == null}" class="mr-2 d-none d-lg-inline text-gray-600 small">Sign In</button>
                                     <img th:if="${usuario != null}" class="img-profile rounded-circle" th:src="${usuario.photoUrl}">
-                                    <img th:if="${usuario == null}" class="img-profile rounded-circle" src="/img/undraw_profile.svg">
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="/paginaenblanco">
+                                    <a class="dropdown-item" href="/evento/mis-eventos">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Profile
+                                        Mis Eventos
                                     </a>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="/evento/form">
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Settings
+                                        Crear Evento
                                     </a>
-                                    <a class="dropdown-item" href="#">
+<!--                                    <a class="dropdown-item" href="#">
                                         <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Activity Log
-                                    </a>
+                                    </a>-->
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <a class="dropdown-item" href="/logout">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Logout
                                     </a>
@@ -366,8 +375,7 @@
                     <!-- Begin Page Content -->
                     <div class="container-fluid">
 
-                        <h3>prueba mapa</h3>
-                        <div style="border-radius: 10px" id="map"></div>
+                        <div style="border-radius: 10px" class="mountain-map" id="map"></div>
 
                         <div class="card shadow mt-4" th:each="evento : ${eventos}">
                             <div class="d-flex flex-row justify-content-between card-header py-3">
