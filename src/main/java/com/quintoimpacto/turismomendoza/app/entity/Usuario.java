@@ -39,6 +39,6 @@ public class Usuario {
     private Rol rol;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Evento> eventosVisitados;
+    private List<Evento> eventos;
     
 }

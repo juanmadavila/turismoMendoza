@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.quintoimpacto.turismomendoza.app.dao.UsuarioRepositorio;
+import com.quintoimpacto.turismomendoza.app.entity.Evento;
 import com.quintoimpacto.turismomendoza.app.entity.Usuario;
 import com.quintoimpacto.turismomendoza.app.enums.Rol;
 import com.quintoimpacto.turismomendoza.app.models.UsuarioModel;
@@ -25,6 +26,7 @@ public class UsuarioService implements UserDetailsService{
 
     private final UsuarioRepositorio usuarioRepositorio;
     private final UsuarioConverter usuarioConverter;
+    private final EventoService eventoService;
     
     @Transactional
     public void save(CustomOauth2User oauth2User) {
@@ -36,29 +38,19 @@ public class UsuarioService implements UserDetailsService{
         usuario.setRol(Rol.USUARIO);
         usuario.setAlta(new Date());
         usuario.setHabilitado(true);
-        usuario.setEventosVisitados(new ArrayList<>());
+        usuario.setEventos(new ArrayList<>());
         
         usuarioRepositorio.save(usuario);
     }
 
-//    private void completar(UsuarioModel model) {
-//        
-//        model.setAlta(new Date());
-//        model.setHabilitado(true);
-//        model.setRol(Rol.USUARIO);
-//        model.setMisEventos(new ArrayList<>());
-//        model.setEventosVisitados(new ArrayList<>());
-//        
-//    }
-    
-    public Usuario findByEmail(String email) {
-        return usuarioRepositorio.findByEmail(email);
-    }
-    
     @Transactional
     public void delete(String id) {
         usuarioRepositorio.deleteById(id);
     }
+    
+    public Usuario findByEmail(String email) {
+        return usuarioRepositorio.findByEmail(email);
+    }  
 
     public Usuario findOne(String id) {
         return usuarioRepositorio.findById(id).orElse(null);
@@ -66,6 +58,20 @@ public class UsuarioService implements UserDetailsService{
 
     public List<Usuario> findAll() {
         return (List<Usuario>) usuarioRepositorio.findAll();
+    }
+    @Transactional
+    public void participar(String idEvento, Usuario usuario) {
+        Evento evento = eventoService.findById(idEvento);
+        
+        for(Usuario usuarioVisitante: evento.getVisitantes()) {
+        	if(usuarioVisitante.getId() == usuario.getId()) {
+        		return;
+        	}
+        }
+        evento.getVisitantes().add(usuario); 
+        usuario.getEventos().add(evento);
+        
+        usuarioRepositorio.saveAndFlush(usuario);
     }
 
     @Override

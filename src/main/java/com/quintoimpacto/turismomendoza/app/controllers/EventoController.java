@@ -7,6 +7,7 @@ import com.quintoimpacto.turismomendoza.app.error.WebException;
 import com.quintoimpacto.turismomendoza.app.models.EventoModel;
 import com.quintoimpacto.turismomendoza.app.models.UsuarioModel;
 import com.quintoimpacto.turismomendoza.app.service.EventoService;
+import com.quintoimpacto.turismomendoza.app.service.UsuarioService;
 import com.quintoimpacto.turismomendoza.app.utils.Fecha;
 import com.quintoimpacto.turismomendoza.app.utils.Texts;
 import static com.quintoimpacto.turismomendoza.app.utils.Texts.EVENTO_FORM_LABEL;
@@ -35,6 +36,7 @@ public class EventoController {
 
     private final UsuarioConverter usuarioConverter;
     private final EventoService eventoService;
+    private final UsuarioService usuarioService;
 
     @GetMapping("/form")
     public String form(HttpSession session, ModelMap modelo) {
@@ -81,6 +83,15 @@ public class EventoController {
     @GetMapping("/eliminar")
     private String eliminarEvento(@RequestParam(required = true) String id) throws WebException {
         eventoService.eliminar(id);
+        return REDIRECT_LABEL;
+    }
+    
+    @GetMapping("/participar")
+    private String participar(HttpSession session , @RequestParam String id) throws WebException {
+        Usuario usuario = (Usuario) session.getAttribute("usuariosession");
+        
+        usuarioService.participar(id, usuario);
+        
         return REDIRECT_LABEL;
     }
 

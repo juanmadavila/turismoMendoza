@@ -16,6 +16,8 @@ public class Texts {
     //redirect
     public static final String REDIRECT_LABEL = "redirect:/";
     
+    public static final String REDIRECT_MIS_EVENTOS_LABEL = "redirect:/";
+    
     
     
 }
