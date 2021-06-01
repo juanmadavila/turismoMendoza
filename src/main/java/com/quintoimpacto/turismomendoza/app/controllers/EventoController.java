@@ -3,6 +3,7 @@ package com.quintoimpacto.turismomendoza.app.controllers;
 import com.quintoimpacto.turismomendoza.app.converters.UsuarioConverter;
 import com.quintoimpacto.turismomendoza.app.entity.Evento;
 import com.quintoimpacto.turismomendoza.app.entity.Usuario;
+import com.quintoimpacto.turismomendoza.app.enums.Acceso;
 import com.quintoimpacto.turismomendoza.app.enums.TipoDeEvento;
 import com.quintoimpacto.turismomendoza.app.error.WebException;
 import com.quintoimpacto.turismomendoza.app.models.EventoModel;
@@ -13,7 +14,6 @@ import com.quintoimpacto.turismomendoza.app.utils.Fecha;
 import com.quintoimpacto.turismomendoza.app.utils.Texts;
 import static com.quintoimpacto.turismomendoza.app.utils.Texts.EVENTO_FORM_LABEL;
 import static com.quintoimpacto.turismomendoza.app.utils.Texts.EVENTO_LABEL;
-import static com.quintoimpacto.turismomendoza.app.utils.Texts.INDEX_LABEL;
 import static com.quintoimpacto.turismomendoza.app.utils.Texts.REDIRECT_LABEL;
 import java.text.ParseException;
 import java.util.Date;
@@ -49,13 +49,14 @@ public class EventoController {
 
 	@PostMapping("/save")
 	public String save(HttpSession session, @Validated @ModelAttribute(EVENTO_LABEL) EventoModel eventoModel,
-			BindingResult result, ModelMap modelo, @RequestParam String fecha, @RequestParam TipoDeEvento tipoDeEvento)
+			BindingResult result, ModelMap modelo, @RequestParam String fecha, @RequestParam TipoDeEvento tipoDeEvento, @RequestParam Acceso acceso)
 			throws ParseException {
 
 		Usuario usuario = (Usuario) session.getAttribute("usuariosession");
 		modelo.put("usuario", usuario);
 
 		Date fechaDate = Fecha.parseFechaGuiones(fecha);
+                String horario = eventoModel.getHorario().split(",")[2];
 
 		try {
 
@@ -63,6 +64,9 @@ public class EventoController {
 			eventoModel.setAnfitrion(usuarioModel);
 			eventoModel.setFecha(fechaDate);
 			eventoModel.setTipoDeEvento(tipoDeEvento);
+			eventoModel.setAcceso(acceso);
+                        eventoModel.setHorario(horario);
+                        System.out.println(eventoModel.getHorario());
 			Evento evento = eventoService.save(eventoModel);
 			usuario.getEventos().add(evento);
 			usuarioService.save(usuario);

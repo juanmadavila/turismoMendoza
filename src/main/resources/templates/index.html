@@ -390,8 +390,9 @@
                                     <div class="d-flex">
                                         <h5 class="m-0 font-weight-bold text-primary" th:text="${evento.nombre}"></h5>
                                         <h5 class="m-0 font-weight-bold text-primary ml-1" th:text="' - ' + ${evento.anfitrion.name}"></h5>
+                                        <h5 th:text="${evento.acceso.alias}" class="badge badge-pill badge-secondary ml-2 mt-1">Acceso</h5>
                                     </div>
-                                    <h7 class="m-0 font-weight-bold" th:text="${evento.fecha}"></h7>
+                                    <h7 class="m-0 font-weight-bold" th:text="${evento.fecha + ' | ' + evento.horario}"></h7>
                                 </div>
                                 <h5 class="m-0 font-weight-bold mr-2" th:text="${evento.tipoDeEvento.alias}"></h5>
                             </div>

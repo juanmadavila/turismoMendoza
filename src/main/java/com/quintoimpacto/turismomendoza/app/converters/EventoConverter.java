@@ -34,15 +34,16 @@ public class EventoConverter extends Converter<EventoModel, Evento> {
             model.setVisitantes(new ArrayList<>());
         }
         try {
+            BeanUtils.copyProperties(model, entity);
             Usuario anfitrion = usuarioConverter.modelToEntity(model.getAnfitrion());
             entity.setAnfitrion(anfitrion);
-            entity.setDescripcion(model.getDescripcion());
-            entity.setFecha(model.getFecha());
-            entity.setHabilitado(model.getHabilitado());
-            entity.setLat(model.getLat());
-            entity.setLon(model.getLon());
-            entity.setNombre(model.getNombre());
-            entity.setTipoDeEvento(model.getTipoDeEvento());
+//            entity.setDescripcion(model.getDescripcion());
+//            entity.setFecha(model.getFecha());
+//            entity.setHabilitado(model.getHabilitado());
+//            entity.setLat(model.getLat());
+//            entity.setLon(model.getLon());
+//            entity.setNombre(model.getNombre());
+//            entity.setTipoDeEvento(model.getTipoDeEvento());
             if (entity.getVisitantes() == null) entity.setVisitantes(new ArrayList<>());
             
 //            BeanUtils.copyProperties(entity, model);

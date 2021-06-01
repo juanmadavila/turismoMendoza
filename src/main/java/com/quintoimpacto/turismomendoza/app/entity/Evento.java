@@ -1,5 +1,6 @@
 package com.quintoimpacto.turismomendoza.app.entity;
 
+import com.quintoimpacto.turismomendoza.app.enums.Acceso;
 import com.quintoimpacto.turismomendoza.app.enums.TipoDeEvento;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +32,7 @@ public class Evento {
     private String descripcion;
     private String lat;
     private String lon;
+    private String horario;
     private Boolean habilitado;
     
     @Temporal(TemporalType.DATE)
@@ -40,10 +42,16 @@ public class Evento {
     @Enumerated(EnumType.STRING)
     private TipoDeEvento tipoDeEvento;
     
+    @Enumerated(EnumType.STRING)
+    private Acceso acceso;
+    
     @ManyToOne
     private Usuario anfitrion;
     
     @ManyToMany
     private List<Usuario> visitantes;
+    
+    @ManyToMany
+    private List<Usuario> pendientes;
     
 }
