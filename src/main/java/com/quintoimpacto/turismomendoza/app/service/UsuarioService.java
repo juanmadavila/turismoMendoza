@@ -42,6 +42,10 @@ public class UsuarioService implements UserDetailsService{
         
         usuarioRepositorio.save(usuario);
     }
+    @Transactional
+    public void save(Usuario usuario) {      
+        usuarioRepositorio.save(usuario);
+    }
 
     @Transactional
     public void delete(String id) {
@@ -64,7 +68,7 @@ public class UsuarioService implements UserDetailsService{
         Evento evento = eventoService.findById(idEvento);
         
         for(Usuario usuarioVisitante: evento.getVisitantes()) {
-        	if(usuarioVisitante.getId() == usuario.getId()) {
+        	if(usuarioVisitante.getId().equals(usuario.getId()) ) {
         		return;
         	}
         }

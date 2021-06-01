@@ -1,6 +1,7 @@
 package com.quintoimpacto.turismomendoza.app.controllers;
 
 import com.quintoimpacto.turismomendoza.app.converters.UsuarioConverter;
+import com.quintoimpacto.turismomendoza.app.entity.Evento;
 import com.quintoimpacto.turismomendoza.app.entity.Usuario;
 import com.quintoimpacto.turismomendoza.app.enums.TipoDeEvento;
 import com.quintoimpacto.turismomendoza.app.error.WebException;
@@ -65,7 +66,8 @@ public class EventoController {
                 eventoModel.setAnfitrion(usuarioModel);
                 eventoModel.setFecha(fechaDate);
                 eventoModel.setTipoDeEvento(tipoDeEvento);
-                eventoService.save(eventoModel);
+                //entity.getAnfitrion().getEventos().add(entity);
+                Evento evento = eventoService.save(eventoModel);
                 return REDIRECT_LABEL;
             
         } catch (WebException e) {

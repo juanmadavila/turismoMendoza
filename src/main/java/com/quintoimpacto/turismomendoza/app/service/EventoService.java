@@ -33,8 +33,9 @@ public class EventoService {
 			entity.setHabilitado(true);
 			entity.setVisitantes(new ArrayList<>());
 		}
+		
 
-		return eventoRepositorio.save(entity);
+		return eventoRepositorio.saveAndFlush(entity);
 	}
 
 	@Transactional
