@@ -29,7 +29,7 @@ public class UsuarioService implements UserDetailsService{
     private final EventoService eventoService;
     
     @Transactional
-    public void save(CustomOauth2User oauth2User) {
+    public Usuario save(CustomOauth2User oauth2User) {
         
         Usuario usuario = new Usuario();
         usuario.setEmail(oauth2User.getEmail());
@@ -40,7 +40,7 @@ public class UsuarioService implements UserDetailsService{
         usuario.setHabilitado(true);
         usuario.setEventos(new ArrayList<>());
         
-        usuarioRepositorio.save(usuario);
+       return  usuarioRepositorio.save(usuario);
     }
     @Transactional
     public void save(Usuario usuario) {      

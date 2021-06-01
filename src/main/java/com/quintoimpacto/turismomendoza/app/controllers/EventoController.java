@@ -35,71 +35,68 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class EventoController {
 
-    private final UsuarioConverter usuarioConverter;
-    private final EventoService eventoService;
-    private final UsuarioService usuarioService;
+	private final UsuarioConverter usuarioConverter;
+	private final EventoService eventoService;
+	private final UsuarioService usuarioService;
 
-    @GetMapping("/form")
-    public String form(HttpSession session, ModelMap modelo) {
-        modelo.addAttribute(EVENTO_LABEL, new EventoModel());
-        Usuario usuario = (Usuario) session.getAttribute("usuariosession");
-        modelo.put("usuario", usuario);
-        return EVENTO_FORM_LABEL;
-    }
+	@GetMapping("/form")
+	public String form(HttpSession session, ModelMap modelo) {
+		modelo.addAttribute(EVENTO_LABEL, new EventoModel());
+		Usuario usuario = (Usuario) session.getAttribute("usuariosession");
+		modelo.put("usuario", usuario);
+		return EVENTO_FORM_LABEL;
+	}
 
-    @PostMapping("/save")
-    public String save(HttpSession session, @Validated @ModelAttribute(EVENTO_LABEL) EventoModel eventoModel,
-            BindingResult result, ModelMap modelo,
-            @RequestParam String fecha, 
-            @RequestParam TipoDeEvento tipoDeEvento) throws ParseException {
-        
-        Usuario usuario = (Usuario) session.getAttribute("usuariosession");
-        modelo.put("usuario", usuario);
-        
-        Date fechaDate = Fecha.parseFechaGuiones(fecha);
-        System.out.println(fechaDate);
-        
-        try {
-            
-        
-                UsuarioModel usuarioModel = usuarioConverter.entityToModel(usuario);
-                eventoModel.setAnfitrion(usuarioModel);
-                eventoModel.setFecha(fechaDate);
-                eventoModel.setTipoDeEvento(tipoDeEvento);
-                //entity.getAnfitrion().getEventos().add(entity);
-                Evento evento = eventoService.save(eventoModel);
-                return REDIRECT_LABEL;
-            
-        } catch (WebException e) {
-            loadModel(modelo, eventoModel, "update");
-            modelo.addAttribute("error", e.getMessage());
-        } catch (Exception e) {
-            loadModel(modelo, eventoModel, "update");
-            modelo.addAttribute("error", e.getMessage());
-        }
-        
+	@PostMapping("/save")
+	public String save(HttpSession session, @Validated @ModelAttribute(EVENTO_LABEL) EventoModel eventoModel,
+			BindingResult result, ModelMap modelo, @RequestParam String fecha, @RequestParam TipoDeEvento tipoDeEvento)
+			throws ParseException {
 
-        return Texts.EVENTO_FORM_LABEL;
-    }
-    
-    @GetMapping("/eliminar")
-    private String eliminarEvento(@RequestParam(required = true) String id) throws WebException {
-        eventoService.eliminar(id);
-        return REDIRECT_LABEL;
-    }
-    
-    @GetMapping("/participar")
-    private String participar(HttpSession session , @RequestParam String id) throws WebException {
-        Usuario usuario = (Usuario) session.getAttribute("usuariosession");
-        
-        usuarioService.participar(id, usuario);
-        
-        return REDIRECT_LABEL;
-    }
+		Usuario usuario = (Usuario) session.getAttribute("usuariosession");
+		modelo.put("usuario", usuario);
 
-    private void loadModel(ModelMap modelo, EventoModel eventoModel, String action) {
-        modelo.addAttribute(EVENTO_LABEL, eventoModel);
-        modelo.addAttribute("action", action);
-    }
+		Date fechaDate = Fecha.parseFechaGuiones(fecha);
+
+		try {
+
+			UsuarioModel usuarioModel = usuarioConverter.entityToModel(usuario);
+			eventoModel.setAnfitrion(usuarioModel);
+			eventoModel.setFecha(fechaDate);
+			eventoModel.setTipoDeEvento(tipoDeEvento);
+			Evento evento = eventoService.save(eventoModel);
+			usuario.getEventos().add(evento);
+			usuarioService.save(usuario);
+			return REDIRECT_LABEL;
+
+		} catch (WebException e) {
+			loadModel(modelo, eventoModel, "update");
+			modelo.addAttribute("error", e.getMessage());
+		} catch (Exception e) {
+			loadModel(modelo, eventoModel, "update");
+			modelo.addAttribute("error", e.getMessage());
+		}
+
+		return Texts.EVENTO_FORM_LABEL;
+	}
+
+	@GetMapping("/eliminar")
+	private String eliminarEvento(@RequestParam(required = true) String id) throws WebException {
+		eventoService.eliminar(id);
+		return REDIRECT_LABEL;
+	}
+
+	@GetMapping("/participar")
+	private String participar(HttpSession session, @RequestParam String id) throws WebException {
+		Usuario usuario = (Usuario) session.getAttribute("usuariosession");
+
+		usuarioService.participar(id, usuario);
+
+		return REDIRECT_LABEL;
+	}
+
+	private void loadModel(ModelMap modelo, EventoModel eventoModel, String action) {
+		modelo.addAttribute(EVENTO_LABEL, eventoModel);
+		modelo.addAttribute("action", action);
+	}
 
 }
