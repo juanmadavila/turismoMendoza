@@ -11,6 +11,7 @@ import com.quintoimpacto.turismomendoza.app.utils.Fecha;
 import com.quintoimpacto.turismomendoza.app.utils.Texts;
 import static com.quintoimpacto.turismomendoza.app.utils.Texts.EVENTO_FORM_LABEL;
 import static com.quintoimpacto.turismomendoza.app.utils.Texts.EVENTO_LABEL;
+import static com.quintoimpacto.turismomendoza.app.utils.Texts.INDEX_LABEL;
 import static com.quintoimpacto.turismomendoza.app.utils.Texts.REDIRECT_LABEL;
 import java.text.ParseException;
 import java.util.Date;
@@ -75,6 +76,12 @@ public class EventoController {
         
 
         return Texts.EVENTO_FORM_LABEL;
+    }
+    
+    @GetMapping("/eliminar")
+    private String eliminarEvento(@RequestParam(required = true) String id) throws WebException {
+        eventoService.eliminar(id);
+        return REDIRECT_LABEL;
     }
 
     private void loadModel(ModelMap modelo, EventoModel eventoModel, String action) {

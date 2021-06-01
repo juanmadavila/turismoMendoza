@@ -24,12 +24,16 @@
     </head>
     <style>
         .mountain {
-            clip-path: polygon(0% 0%, 100% 0%, 100% 6%, 50% 20%, 100% 31%, 50% 40%, 100% 50%, 50% 60%,100% 70%,50% 80%,100% 90%,50% 100%, 0% 100%);
-        }
-        
+            clip-path: polygon(0% 0%, 100% 0%, 100% 6%, 5% 20%, 5% 31%, 50% 40%, 100% 50%, 50% 60%,100% 70%,50% 80%,100% 90%,50% 100%, 0% 100%);
+        }        
         .mountain-map {
             /*position: absolute;*/
             clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% -50%);
+        }
+        .btnCrear {
+            margin-left: 5%;
+            margin-top: 5%;
+            color: black
         }
     </style>
     <body id="page-top">
@@ -46,6 +50,9 @@
                     </div>
                     <div class="sidebar-brand-text mx-3">Mendoza</div>
                 </a>
+                <div class="btnCrear">
+                    <a type="button" class="btn btn-secondary" th:href="@{/evento/form}">Crear evento</a>
+                </div>
 
 <!--                 Sidebar - Brand 
                  Divider 

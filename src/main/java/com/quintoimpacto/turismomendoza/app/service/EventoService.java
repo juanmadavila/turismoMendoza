@@ -36,6 +36,13 @@ public class EventoService {
 
 		return eventoRepositorio.save(entity);
 	}
+        
+        @Transactional
+        public void eliminar(String id) throws WebException {
+            
+            eventoRepositorio.deleteById(id);
+            
+        }
 
 	public Evento findById(String id) {
 		if (id == null)
