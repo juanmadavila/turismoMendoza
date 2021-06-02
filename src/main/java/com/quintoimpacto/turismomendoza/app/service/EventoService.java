@@ -64,7 +64,12 @@ public class EventoService {
 
         evento.getPendientes().remove(index);
         
-        if (acepted) evento.getVisitantes().add(usuario);
+        if (acepted) {
+        	
+        	usuario.getEventos().add(evento);
+        	evento.getVisitantes().add(usuario);
+        	
+        }
 
         eventoRepositorio.save(evento);
     }

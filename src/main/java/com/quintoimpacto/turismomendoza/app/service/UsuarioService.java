@@ -70,8 +70,10 @@ public class UsuarioService implements UserDetailsService {
     @Transactional
     public void participar(String idEvento, Usuario usuario) {
         Evento evento = eventoService.findById(idEvento);
-
-        for (Usuario usuarioVisitante : evento.getVisitantes()) {
+        List<Usuario> usuarios = new ArrayList<>(evento.getVisitantes());
+        usuarios.addAll(evento.getPendientes());
+        
+        for (Usuario usuarioVisitante : usuarios) {
             if (usuarioVisitante.getId().equals(usuario.getId())) {
                 return;
             }
