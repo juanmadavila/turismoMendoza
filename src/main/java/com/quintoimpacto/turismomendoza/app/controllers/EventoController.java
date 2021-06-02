@@ -118,7 +118,7 @@ public class EventoController {
             String mensaje = acepted ? "Se añadió a lista de invitados" : "Se borró de la lista de pendientes";
             modelo.addFlashAttribute("mensaje", mensaje);
             
-            return REDIRECT_PARTICIPANTES_LABEL+"idEvento?="+idEvento;
+            return REDIRECT_PARTICIPANTES_LABEL("idEvento", idEvento);
         }
 
 	private void loadModel(ModelMap modelo, EventoModel eventoModel, String action) {

@@ -21,6 +21,10 @@ public class Texts {
     public static final String REDIRECT_MIS_EVENTOS_LABEL = "redirect:/usuario/mis-eventos";
     public static final String REDIRECT_PARTICIPANTES_LABEL = "redirect:/evento/participantes";
     
+    public static String REDIRECT_PARTICIPANTES_LABEL(String nombre, String parametro) {
+        return REDIRECT_PARTICIPANTES_LABEL + "?" + nombre + "=" + parametro;
+    }
+    
     
     
 }
