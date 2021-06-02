@@ -11,10 +11,11 @@ import com.quintoimpacto.turismomendoza.app.models.UsuarioModel;
 import com.quintoimpacto.turismomendoza.app.service.EventoService;
 import com.quintoimpacto.turismomendoza.app.service.UsuarioService;
 import com.quintoimpacto.turismomendoza.app.utils.Fecha;
-import com.quintoimpacto.turismomendoza.app.utils.Texts;
 import static com.quintoimpacto.turismomendoza.app.utils.Texts.EVENTO_FORM_LABEL;
 import static com.quintoimpacto.turismomendoza.app.utils.Texts.EVENTO_LABEL;
+import static com.quintoimpacto.turismomendoza.app.utils.Texts.EVENTO_PARTICIPANTES_LABEL;
 import static com.quintoimpacto.turismomendoza.app.utils.Texts.REDIRECT_LABEL;
+import static com.quintoimpacto.turismomendoza.app.utils.Texts.REDIRECT_PARTICIPANTES_LABEL;
 import java.text.ParseException;
 import java.util.Date;
 import javax.servlet.http.HttpSession;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/evento")
@@ -80,23 +82,44 @@ public class EventoController {
 			modelo.addAttribute("error", e.getMessage());
 		}
 
-		return Texts.EVENTO_FORM_LABEL;
+		return EVENTO_FORM_LABEL;
 	}
 
 	@GetMapping("/eliminar")
-	private String eliminarEvento(@RequestParam(required = true) String id) throws WebException {
+	public String eliminarEvento(@RequestParam(required = true) String id) throws WebException {
 		eventoService.eliminar(id);
 		return REDIRECT_LABEL;
 	}
 
 	@GetMapping("/participar")
-	private String participar(HttpSession session, @RequestParam String id) throws WebException {
+	public String participar(HttpSession session, @RequestParam String id) throws WebException {
 		Usuario usuario = (Usuario) session.getAttribute("usuariosession");
 
 		usuarioService.participar(id, usuario);
 
 		return REDIRECT_LABEL;
 	}
+        
+        @GetMapping("/participantes")
+        public String participantes(ModelMap modelo, @RequestParam String idEvento) {
+            Evento evento = eventoService.findById(idEvento);
+            
+            modelo.put("evento", evento);
+            
+            return EVENTO_PARTICIPANTES_LABEL;
+        }
+        
+        @GetMapping("/check-invitations")
+        public String checkInviations(@RequestParam String idEvento, @RequestParam String idUsuario, 
+                @RequestParam Boolean acepted, RedirectAttributes modelo) {
+            
+            eventoService.aceptarORechazar(idEvento, idUsuario, acepted);
+            
+            String mensaje = acepted ? "Se añadió a lista de invitados" : "Se borró de la lista de pendientes";
+            modelo.addFlashAttribute("mensaje", mensaje);
+            
+            return REDIRECT_PARTICIPANTES_LABEL+"idEvento?="+idEvento;
+        }
 
 	private void loadModel(ModelMap modelo, EventoModel eventoModel, String action) {
 		modelo.addAttribute(EVENTO_LABEL, eventoModel);
