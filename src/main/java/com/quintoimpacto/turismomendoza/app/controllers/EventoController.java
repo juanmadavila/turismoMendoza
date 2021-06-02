@@ -90,6 +90,13 @@ public class EventoController {
 		eventoService.eliminar(id);
 		return REDIRECT_LABEL;
 	}
+	
+	@GetMapping("/finalizar")
+	public String finalizarEvento(@RequestParam String idEvento) throws WebException {
+		eventoService.finalizar(idEvento);
+		return REDIRECT_LABEL;
+	}
+	
 
 	@GetMapping("/participar")
 	public String participar(HttpSession session, @RequestParam String id) throws WebException {

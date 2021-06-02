@@ -39,6 +39,20 @@ public class EventoService {
 
         return eventoRepositorio.saveAndFlush(entity);
     }
+    
+    public void finalizar(String idEvento) {
+    	Evento evento = findById(idEvento);
+    	
+    	evento.setHabilitado(false);
+    	
+    	eventoRepositorio.save(evento);
+    	
+    }
+    
+    public List<Evento> buscarHabilitados() {
+    	
+    	return eventoRepositorio.findAllHabilitados();
+    }
 
     public void aceptarORechazar(String idEvento, String idUsuario, boolean acepted) {
 
@@ -80,6 +94,7 @@ public class EventoService {
         eventoRepositorio.deleteById(id);
 
     }
+    
 
     public Evento findById(String id) {
         if (id == null) {

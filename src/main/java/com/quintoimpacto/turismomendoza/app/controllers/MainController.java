@@ -36,7 +36,7 @@ public class MainController {
         Usuario usuario = (Usuario) session.getAttribute("usuariosession");
         modelo.put("usuario", usuario);
 
-        List<EventoModel> eventosModel = eventoConverter.entitiesToModels(eventoService.findAll());
+        List<EventoModel> eventosModel = eventoConverter.entitiesToModels(eventoService.buscarHabilitados());
         modelo.put("eventos", eventosModel);
 
         JSONArray jsonArray = new JSONArray();
