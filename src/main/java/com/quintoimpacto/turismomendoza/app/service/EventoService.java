@@ -23,6 +23,7 @@ public class EventoService {
     private final EventoRepositorio eventoRepositorio;
     private final EventoConverter eventoConverter;
     private final UsuarioRepositorio usuarioRepositorio;
+    private final EmailSender emailSender;
 
     @Transactional
     public Evento save(EventoModel model) throws WebException {
@@ -40,13 +41,13 @@ public class EventoService {
         return eventoRepositorio.saveAndFlush(entity);
     }
     
-    public void finalizar(String idEvento) {
+    @Transactional(rollbackFor = { Exception.class, WebException.class })
+    public void finalizar(String idEvento) throws WebException, Exception {
     	Evento evento = findById(idEvento);
-    	
     	evento.setHabilitado(false);
-    	
     	eventoRepositorio.save(evento);
-    	
+        
+    	emailSender.sendEventoDeshabilitado(evento);
     }
     
     public List<Evento> buscarHabilitados() {
@@ -54,7 +55,7 @@ public class EventoService {
     	return eventoRepositorio.findAllHabilitados();
     }
 
-    public void aceptarORechazar(String idEvento, String idUsuario, boolean acepted) {
+    public void aceptarORechazar(String idEvento, String idUsuario, boolean acepted) throws WebException, Exception {
 
         Evento evento = findById(idEvento);
         Usuario usuario = usuarioRepositorio.getOne(idUsuario);
@@ -86,6 +87,7 @@ public class EventoService {
         }
 
         eventoRepositorio.save(evento);
+        emailSender.sendAcceptedUser(usuario, evento, acepted);
     }
 
     @Transactional
