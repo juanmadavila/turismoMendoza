@@ -94,7 +94,7 @@ public class EventoController {
     }
 
     @GetMapping("/finalizar")
-    public String finalizarEvento(@RequestParam String idEvento) throws WebException {
+    public String finalizarEvento(@RequestParam String idEvento) throws WebException, Exception {
         eventoService.finalizar(idEvento);
         return REDIRECT_LABEL;
     }
@@ -119,7 +119,7 @@ public class EventoController {
 
     @GetMapping("/check-invitations")
     public String checkInviations(@RequestParam String idEvento, @RequestParam String idUsuario,
-            @RequestParam Boolean acepted, RedirectAttributes modelo) {
+            @RequestParam Boolean acepted, RedirectAttributes modelo) throws Exception {
 
         try {
             eventoService.aceptarORechazar(idEvento, idUsuario, acepted);
