@@ -145,12 +145,12 @@ public class EventoController {
 //    }
 //    
     
-    @RequestMapping(value = "/search/{q}", method = RequestMethod.GET)
-    public String search (Model model,HttpSession session , @PathVariable String q) {
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public String search (Model model,HttpSession session , @RequestParam String q) {
     	
-    	model.addAttribute("eventos" ,eventoService.findBy(q));
     	Usuario usuario = (Usuario) session.getAttribute("usuariosession");
-         model.addAttribute("usuario", usuario);
+    	model.addAttribute("eventos" , eventoService.findBy(q));
+        model.addAttribute("usuario", usuario);
     	
     	return INDEX_LABEL;
     }

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+    <th:block th:fragment="eventos">
+        <div id ="eventosDiv" class="card shadow mt-4" th:each="evento : ${eventos}">
+            <div class="d-flex flex-row justify-content-between card-header py-3">
+                <div class="flex-column">
+                    <div class="d-flex">
+                        <h5 class="m-0 font-weight-bold text-primary" th:text="${evento.nombre}"></h5>
+                        <h5 class="m-0 font-weight-bold text-primary ml-1" th:text="' - ' + ${evento.anfitrion.name}"></h5>
+                        <h5 th:if="${evento.acceso.name() == 'PRIVADO'}" th:text="${evento.acceso.alias}" style="margin-top: 3px" class="badge badge-pill badge-dark ml-2"></h5>
+                        <h5 th:if="${evento.acceso.name() == 'PUBLICO'}" th:text="${evento.acceso.alias}" style="margin-top: 3px; background-color: blueviolet; color: #fff" class="badge badge-pill badge-light ml-2 mt-1"></h5>
+                    </div>
+                    <h7 class="m-0 font-weight-bold" th:text="${evento.fecha + ' | ' + evento.horario}"></h7>
+                </div>
+                <h5 class="m-0 font-weight-bold mr-2" th:text="${evento.tipoDeEvento.alias}"></h5>
+            </div>
+            <div class="card-body">
+                <p th:text="${evento.descripcion}"></p>
+            </div>
+            <div th:if="${usuario != null}" class="d-flex flex-row justify-content-between">
+                <div style="width: 15%">
+                    <a th:if="${evento.anfitrion.id != usuario.id and evento.acceso.name() == 'PUBLICO'}" th:href="@{/evento/participar(id=${__evento.id__})}" style="width: 100%" class="btn btn-success m-3">Participar</a>
+                    <a th:if="${evento.anfitrion.id != usuario.id and evento.acceso.name() == 'PRIVADO'}" th:href="@{/evento/participar(id=${__evento.id__})}" style="width: 100%" class="btn btn-success m-3">Solicitar permiso</a>
+                    <a th:if="${evento.anfitrion.id == usuario.id}" th:href="@{/evento/participantes(idEvento=${evento.id})}" style="width: 100%" class="btn btn-success m-3">Detalles</a>
+                </div>
+                <div class="d-flex flex-row w-25">
+                    <a th:if="${usuario.rol.name() == 'ADMIN' or evento.anfitrion.id eq usuario.id}" th:href="@{/evento/editar(id=${__evento.id__})}"  style="width: 100%" class="btn btn-warning m-3">Editar</a>
+                    <a th:if="${usuario.rol.name() == 'ADMIN' or evento.anfitrion.id eq usuario.id}" th:href="@{/evento/eliminar(id=${__evento.id__})}" style="width: 100%" class="btn btn-danger m-3">Eliminar</a>
+                </div>
+            </div>
+        </div> 
+    </th:block>
+</body>
+</html>

@@ -12,14 +12,14 @@
         <title>Turismo Mendoza</title>
 
         <!-- Custom fonts for this template-->
-        <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
 
         <!-- Custom styles for this template-->
-        <link href="css/sb-admin-2.min.css" rel="stylesheet">
-        <link href="css/sb-admin-2.css" rel="stylesheet">
+        <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+        <link href="/css/sb-admin-2.css" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     </head>
@@ -37,6 +37,7 @@
             color: black
         }
     </style>
+
     <body id="page-top">
 
         <!-- Page Wrapper -->
@@ -178,6 +179,7 @@
                 <!-- Main Content -->
                 <div id="content">
 
+
                     <!-- Topbar -->
                     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
@@ -187,11 +189,11 @@
                         </button>
 
                         <!-- Topbar Search -->
-                        <form
+                        <form th:action="@{/evento/search}"
                             class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                             <div class="input-group">
-                                <input onchange="buscar()" id="buscarEvento" type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                       aria-label="Search" aria-describedby="basic-addon2">
+                                <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                                       aria-label="Search" aria-describedby="basic-addon2" name="q">
                                 <div class="input-group-append">
                                     <button class="btn btn-primary" type="button">
                                         <i class="fas fa-search fa-sm"></i>
@@ -199,26 +201,8 @@
                                 </div>
                             </div>
                         </form>
-                        
-                        <script type="text/javascript">
-                        	$(document).ready(function(){
-                        	
-                        		function buscar() {
-                        			let url = "localhost:8080/evento/search/";
-                        			
-                        			const inputValue = $('#buscarEvento').val();
-                        			
-                        			if (inputValue != ''){
-                        				url += inputValue; 
-                        			}
-                        			
-                        			$("#eventosDiv").load(url);
-                        		}
 
 
-							});
-                        </script>
-                     
 
                         <!-- Topbar Navbar -->
                         <ul class="navbar-nav ml-auto">
@@ -232,18 +216,16 @@
                                 <!-- Dropdown - Messages -->
                                 <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
                                      aria-labelledby="searchDropdown">
-                                    <form class="form-inline mr-auto w-100 navbar-search">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control bg-light border-0 small"
-                                                   placeholder="Search for..." aria-label="Search"
-                                                   aria-describedby="basic-addon2">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-primary" type="button">
-                                                    <i class="fas fa-search fa-sm"></i>
-                                                </button>
-                                            </div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                               placeholder="Search for..." aria-label="Search"
+                                               aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </li>
 
@@ -404,35 +386,8 @@
                     <div class="container-fluid">
 
                         <div style="border-radius: 10px" class="mountain-map" id="map"></div>
-
-                        <div id ="eventosDiv" class="card shadow mt-4" th:each="evento : ${eventos}">
-                            <div class="d-flex flex-row justify-content-between card-header py-3">
-                                <div class="flex-column">
-                                    <div class="d-flex">
-                                        <h5 class="m-0 font-weight-bold text-primary" th:text="${evento.nombre}"></h5>
-                                        <h5 class="m-0 font-weight-bold text-primary ml-1" th:text="' - ' + ${evento.anfitrion.name}"></h5>
-                                        <h5 th:if="${evento.acceso.name() == 'PRIVADO'}" th:text="${evento.acceso.alias}" style="margin-top: 3px" class="badge badge-pill badge-dark ml-2"></h5>
-                                        <h5 th:if="${evento.acceso.name() == 'PUBLICO'}" th:text="${evento.acceso.alias}" style="margin-top: 3px; background-color: blueviolet; color: #fff" class="badge badge-pill badge-light ml-2 mt-1"></h5>
-                                    </div>
-                                    <h7 class="m-0 font-weight-bold" th:text="${evento.fecha + ' | ' + evento.horario}"></h7>
-                                </div>
-                                <h5 class="m-0 font-weight-bold mr-2" th:text="${evento.tipoDeEvento.alias}"></h5>
-                            </div>
-                            <div class="card-body">
-                                <p th:text="${evento.descripcion}"></p>
-                            </div>
-                            <div th:if="${usuario != null}" class="d-flex flex-row justify-content-between">
-                                <div style="width: 15%">
-                                    <a th:if="${evento.anfitrion.id != usuario.id and evento.acceso.name() == 'PUBLICO'}" th:href="@{/evento/participar(id=${__evento.id__})}" style="width: 100%" class="btn btn-success m-3">Participar</a>
-                                    <a th:if="${evento.anfitrion.id != usuario.id and evento.acceso.name() == 'PRIVADO'}" th:href="@{/evento/participar(id=${__evento.id__})}" style="width: 100%" class="btn btn-success m-3">Solicitar permiso</a>
-                                    <a th:if="${evento.anfitrion.id == usuario.id}" th:href="@{/evento/participantes(idEvento=${evento.id})}" style="width: 100%" class="btn btn-success m-3">Detalles</a>
-                                </div>
-                                <div class="d-flex flex-row w-25">
-                                    <a th:if="${usuario.rol.name() == 'ADMIN' or evento.anfitrion.id eq usuario.id}" th:href="@{/evento/editar(id=${__evento.id__})}"  style="width: 100%" class="btn btn-warning m-3">Editar</a>
-                                    <a th:if="${usuario.rol.name() == 'ADMIN' or evento.anfitrion.id eq usuario.id}" th:href="@{/evento/eliminar(id=${__evento.id__})}" style="width: 100%" class="btn btn-danger m-3">Eliminar</a>
-                                </div>
-                            </div>
-                        </div>
+<!--                        <div id="eventosDiv"></div>-->
+                        <div th:replace="fragments :: eventos"></div>
 
                         <div class="d-none" th:each="json : ${eventosJson}">
                             <input type="hidden" class="json" th:value="${json}"/>
@@ -503,63 +458,61 @@
         <script src="js/demo/chart-pie-demo.js"></script>
 
         <script>
-            let map;
-            var markers = [];
+                                        let map;
+                                        var markers = [];
 
-            const jsons = document.querySelectorAll('.json');
-            jsons.forEach(json => {
-                markers.push(JSON.parse(json.value));
-            });
+                                        const jsons = document.querySelectorAll('.json');
+                                        jsons.forEach(json => {
+                                            markers.push(JSON.parse(json.value));
+                                        });
 
-            function initMap() {
-                map = new google.maps.Map(document.getElementById("map"), {
-                    center: {lat: -32.8933144, lng: -68.8490985},
-                    zoom: 9
-                });
-                var infoWindow = new google.maps.InfoWindow();
-                for (i = 0; i < markers.length; i++) {
-                    var position = new google.maps.LatLng(markers[i].lat, markers[i].lon);
-                    marker = new google.maps.Marker({
-                        position: position,
-                        map: map,
-                        title: markers[i].nombre
-                    });
-                    const infoWindowContent =
-                            '<div class="info_content">' +
-                            '<div class="d-flex">' +
-                            `<img style="width:30px; height:30px; border-radius:50%; margin-right:2px" src="${markers[i].urlPhotoAnfitrion}">` +
-                            `<h4>${markers[i].nombreAnfitrion}</h4>` +
-                            '</div>' +
-                            `<h5>${markers[i].nombre} - ${markers[i].tipo}</h5>` +
-                            `<p>${markers[i].fecha}</p>` +
-                            `<p>${markers[i].descripcion}</p>` +
-                            '</div>'
-                            ;
-                    console.log(marker);
-                    google.maps.event.addListener(marker, 'click', (function (marker, i) {
-                        return function () {
-                            infoWindow.setContent(infoWindowContent);
-                            infoWindow.open(map, marker);
-                        }
-                    })(marker, i));
-                    // Center the map to fit all markers on the screen
-                }
-            }
+                                        function initMap() {
+                                            map = new google.maps.Map(document.getElementById("map"), {
+                                                center: {lat: -32.8933144, lng: -68.8490985},
+                                                zoom: 9
+                                            });
+                                            var infoWindow = new google.maps.InfoWindow();
+                                            for (i = 0; i < markers.length; i++) {
+                                                var position = new google.maps.LatLng(markers[i].lat, markers[i].lon);
+                                                marker = new google.maps.Marker({
+                                                    position: position,
+                                                    map: map,
+                                                    title: markers[i].nombre
+                                                });
+                                                const infoWindowContent =
+                                                        '<div class="info_content">' +
+                                                        '<div class="d-flex">' +
+                                                        `<img style="width:30px; height:30px; border-radius:50%; margin-right:2px" src="${markers[i].urlPhotoAnfitrion}">` +
+                                                        `<h4>${markers[i].nombreAnfitrion}</h4>` +
+                                                        '</div>' +
+                                                        `<h5>${markers[i].nombre} - ${markers[i].tipo}</h5>` +
+                                                        `<p>${markers[i].fecha}</p>` +
+                                                        `<p>${markers[i].descripcion}</p>` +
+                                                        '</div>'
+                                                        ;
+                                                google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                                                    return function () {
+                                                        infoWindow.setContent(infoWindowContent);
+                                                        infoWindow.open(map, marker);
+                                                    }
+                                                })(marker, i));
+                                                // Center the map to fit all markers on the screen
+                                            }
+                                        }
 
-            function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-                infoWindow.setPosition(pos);
-                infoWindow.setContent(
-                        browserHasGeolocation
-                        ? "Error: The Geolocation service failed."
-                        : "Error: Your browser doesn't support geolocation."
-                        );
-                infoWindow.open(map);
-            }
+                                        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+                                            infoWindow.setPosition(pos);
+                                            infoWindow.setContent(
+                                                    browserHasGeolocation
+                                                    ? "Error: The Geolocation service failed."
+                                                    : "Error: Your browser doesn't support geolocation."
+                                                    );
+                                            infoWindow.open(map);
+                                        }
 
 
 
         </script>
-
         <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
         <script
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCV0g9AG_ll8UhZ1coTbed0HL2rVpQaXWI&callback=initMap&libraries=&v=weekly"
