@@ -133,6 +133,11 @@ public class EventoController {
         
         return REDIRECT_PARTICIPANTES_LABEL("idEvento", idEvento);
     }
+    
+    @GetMapping("/search")
+    public String findBy(@RequestParam String q, ModelMap modelo){
+        return "";
+    }
 
     private void loadModel(ModelMap modelo, EventoModel eventoModel, String action) {
         modelo.addAttribute(EVENTO_LABEL, eventoModel);

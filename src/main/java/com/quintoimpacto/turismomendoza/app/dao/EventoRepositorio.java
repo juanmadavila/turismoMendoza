@@ -14,8 +14,11 @@ import org.springframework.data.repository.query.Param;
 @Repository
 public interface EventoRepositorio extends JpaRepository<Evento, String> {
 	
-	 @Query("SELECT e FROM Evento e WHERE e.habilitado = true")
-	 public List<Evento> findAllHabilitados();
+    @Query("SELECT e FROM Evento e WHERE e.habilitado = true")
+    public List<Evento> findAllHabilitados();
+
+    @Query(value = "SELECT e FROM Evento e INNER JOIN Usuario u ON e.anfitrion_id = u.id WHERE e.habilitado = true AND (e.nombre LIKE :q OR e.fecha LIKE :q OR u.name LIKE :q)", nativeQuery = true)
+    public List<Evento> findBy(@Param("q") String q);
 	 
 	 //    @Query("SELECT e FROM Evento e")
 //    public Page<Evento> findAll(Pageable pageable);

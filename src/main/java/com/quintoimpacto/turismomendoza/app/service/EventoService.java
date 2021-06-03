@@ -47,7 +47,7 @@ public class EventoService {
     	evento.setHabilitado(false);
     	eventoRepositorio.save(evento);
         
-    	emailSender.sendEventoDeshabilitado(evento);
+//    	emailSender.sendEventoDeshabilitado(evento);
     }
     
     public List<Evento> buscarHabilitados() {
@@ -87,7 +87,7 @@ public class EventoService {
         }
 
         eventoRepositorio.save(evento);
-        emailSender.sendAcceptedUser(usuario, evento, acepted);
+//        emailSender.sendAcceptedUser(usuario, evento, acepted);
     }
 
     @Transactional
@@ -119,6 +119,10 @@ public class EventoService {
 //    }
     public List<Evento> findAll() {
         return eventoRepositorio.findAll();
+    }
+    
+    public List<Evento> findBy(String q) {
+        return eventoRepositorio.findBy("%" + q + "%");
     }
 
     private void validar(EventoModel model) throws WebException {
