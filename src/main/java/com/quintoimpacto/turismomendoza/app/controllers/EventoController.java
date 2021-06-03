@@ -16,6 +16,7 @@ import static com.quintoimpacto.turismomendoza.app.utils.Texts.EVENTO_LABEL;
 import static com.quintoimpacto.turismomendoza.app.utils.Texts.EVENTO_PARTICIPANTES_LABEL;
 import static com.quintoimpacto.turismomendoza.app.utils.Texts.REDIRECT_LABEL;
 import static com.quintoimpacto.turismomendoza.app.utils.Texts.REDIRECT_PARTICIPANTES_LABEL;
+import static com.quintoimpacto.turismomendoza.app.utils.Texts.INDEX_LABEL;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.logging.Level;
@@ -24,13 +25,16 @@ import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -134,9 +138,21 @@ public class EventoController {
         return REDIRECT_PARTICIPANTES_LABEL("idEvento", idEvento);
     }
     
-    @GetMapping("/search")
-    public String findBy(@RequestParam String q, ModelMap modelo){
-        return "";
+//    @GetMapping("/search")
+//    public String findBy(@RequestParam String q, ModelMap modelo){
+//    	modelo.addAttribute("eventos", eventoService.findBy(q));
+//        return "";
+//    }
+//    
+    
+    @RequestMapping(value = "/search/{q}", method = RequestMethod.GET)
+    public String search (Model model,HttpSession session , @PathVariable String q) {
+    	
+    	model.addAttribute("eventos" ,eventoService.findBy(q));
+    	Usuario usuario = (Usuario) session.getAttribute("usuariosession");
+         model.addAttribute("usuario", usuario);
+    	
+    	return INDEX_LABEL;
     }
 
     private void loadModel(ModelMap modelo, EventoModel eventoModel, String action) {
