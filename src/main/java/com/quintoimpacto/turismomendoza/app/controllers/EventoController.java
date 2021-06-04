@@ -113,9 +113,10 @@ public class EventoController {
     }
 
     @GetMapping("/participantes")
-    public String participantes(ModelMap modelo, @RequestParam String idEvento) {
+    public String participantes(HttpSession session, ModelMap modelo, @RequestParam String idEvento) {
         Evento evento = eventoService.findById(idEvento);
-
+        Usuario usuario = (Usuario) session.getAttribute("usuariosession");
+        modelo.put("usuario", usuario);
         modelo.put("evento", evento);
 
         return EVENTO_PARTICIPANTES_LABEL;
