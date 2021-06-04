@@ -32,7 +32,6 @@ public class EventoService {
 
         Evento entity = eventoConverter.modelToEntity(model);
 
-        // Revisar si no se rompe
         if (findById(model.getId()) == null) {
             entity.setHabilitado(true);
             entity.setVisitantes(new ArrayList<>());
@@ -40,63 +39,55 @@ public class EventoService {
 
         return eventoRepositorio.saveAndFlush(entity);
     }
-    
-    @Transactional(rollbackFor = { Exception.class, WebException.class })
-    public void finalizar(String idEvento) throws WebException, Exception {
-    	Evento evento = findById(idEvento);
-    	evento.setHabilitado(false);
-    	eventoRepositorio.save(evento);
-        
-//    	emailSender.sendEventoDeshabilitado(evento);
-    }
-    
-    public List<Evento> buscarHabilitados() {
-    	
-    	return eventoRepositorio.findAllHabilitados();
+
+    @Transactional(rollbackFor = {Exception.class, WebException.class})
+    public void borrarInvitacion(String idEvento, String idUsuario) {
+        Evento evento = findById(idEvento);
+        Usuario usuario = usuarioRepositorio.findById(idUsuario).get();
+
+        evento.getVisitantes().remove(usuario);
+        usuario.getEventos().remove(evento);
+
+        eventoRepositorio.save(evento);
     }
 
+    @Transactional(rollbackFor = {Exception.class, WebException.class})
+    public void finalizar(String idEvento) throws WebException, Exception {
+        Evento evento = findById(idEvento);
+        evento.setHabilitado(false);
+        eventoRepositorio.save(evento);
+
+//    	emailSender.sendEventoDeshabilitado(evento);
+    }
+
+    @Transactional(rollbackFor = {Exception.class, WebException.class})
     public void aceptarORechazar(String idEvento, String idUsuario, boolean acepted) throws WebException, Exception {
 
         Evento evento = findById(idEvento);
         Usuario usuario = usuarioRepositorio.getOne(idUsuario);
-        
-//        Iterator<Usuario> it = evento.getPendientes().iterator();
-//
-//        while (it.hasNext()) {
-//            Usuario pendiente = it.next();
-//            if (pendiente.getId().equals(usuario.getId())) it.remove();
-//        }
 
-        int index = 0;
-        Usuario pendiente;
-        for (int i = 0; i < evento.getPendientes().size(); i++) {
-            pendiente = evento.getPendientes().get(i);
-            if (pendiente.getId().equals(idUsuario)) {
-                index = i;
-                break;
-            }
-        }
+        evento.getPendientes().remove(usuario);
 
-        evento.getPendientes().remove(index);
-        
         if (acepted) {
-        	
-        	usuario.getEventos().add(evento);
-        	evento.getVisitantes().add(usuario);
-        	
+            usuario.getEventos().add(evento);
+            evento.getVisitantes().add(usuario);
         }
 
         eventoRepositorio.save(evento);
 //        emailSender.sendAcceptedUser(usuario, evento, acepted);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class, WebException.class})
     public void eliminar(String id) throws WebException {
 
         eventoRepositorio.deleteById(id);
 
     }
-    
+
+    public List<Evento> buscarHabilitados() {
+
+        return eventoRepositorio.findAllHabilitados();
+    }
 
     public Evento findById(String id) {
         if (id == null) {
@@ -120,7 +111,7 @@ public class EventoService {
     public List<Evento> findAll() {
         return eventoRepositorio.findAll();
     }
-    
+
     public List<Evento> findBy(String q) {
         return eventoRepositorio.findBy("%" + q + "%");
     }
@@ -136,4 +127,5 @@ public class EventoService {
         }
 
     }
+
 }

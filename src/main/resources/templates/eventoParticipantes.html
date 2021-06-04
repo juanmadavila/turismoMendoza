@@ -218,7 +218,7 @@
                                                 <td th:text="${usuario.name}"></td>
                                                 <td th:text="${usuario.email}"></td>
                                                 <!--Hacer lógica en el back-->
-                                                <td><a th:href="@{/evento/eliminar-invitacion}"
+                                                <td><a th:href="@{/evento/borrar-invitacion(idEvento=${evento.id}, idUsuario=${usuario.id})}"
                                                        class="btn btn-danger">Borrar invitación</a></td>
                                             </tr>
                                         </tbody>

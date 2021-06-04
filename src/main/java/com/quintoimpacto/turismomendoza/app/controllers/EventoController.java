@@ -31,7 +31,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -135,6 +134,13 @@ public class EventoController {
         } catch (WebException ex) {
             Logger.getLogger(EventoController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        return REDIRECT_PARTICIPANTES_LABEL("idEvento", idEvento);
+    }
+    
+    @GetMapping("/borrar-invitacion")
+    public String borrarInvitacion(@RequestParam String idEvento, @RequestParam String idUsuario) {
+        eventoService.borrarInvitacion(idEvento, idUsuario);
         
         return REDIRECT_PARTICIPANTES_LABEL("idEvento", idEvento);
     }
