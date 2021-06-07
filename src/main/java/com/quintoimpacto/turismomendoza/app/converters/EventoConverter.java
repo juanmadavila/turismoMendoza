@@ -27,7 +27,7 @@ public class EventoConverter extends Converter<EventoModel, Evento> {
 
         Evento entity = new Evento();
 
-        if (model.getId() != null) {
+        if (model.getId() != null && !model.getId().isEmpty()) {
             entity = eventoRepositorio.findById(model.getId()).get();
         }
         if (model.getVisitantes() == null) {

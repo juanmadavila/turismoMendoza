@@ -100,8 +100,10 @@ public class EventoController {
     }
 
     @GetMapping("/eliminar")
-    public String eliminarEvento(@RequestParam(required = true) String id) throws WebException {
+    public String eliminarEvento(HttpSession session,@RequestParam(required = true) String id) throws WebException {
         eventoService.eliminar(id);
+        Usuario usuario = (Usuario) session.getAttribute("usuariosession");
+        session.setAttribute("usuariosession", usuarioService.save(usuario));
         return REDIRECT_LABEL;
     }
 

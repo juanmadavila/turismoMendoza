@@ -69,7 +69,7 @@ public class EventoService {
         evento.setHabilitado(false);
         eventoRepositorio.save(evento);
 
-//    	emailSender.sendEventoDeshabilitado(evento);
+        emailSender.sendEventoDeshabilitado(evento);
     }
 
     @Transactional(rollbackFor = {Exception.class, WebException.class})
@@ -86,12 +86,23 @@ public class EventoService {
         }
 
         eventoRepositorio.save(evento);
-//        emailSender.sendAcceptedUser(usuario, evento, acepted);
+        emailSender.sendAcceptedUser(usuario, evento, acepted);
     }
 
     @Transactional(rollbackFor = {Exception.class, WebException.class})
     public void eliminar(String id) throws WebException {
-
+    	
+    	Evento evento = findById(id);
+    	for(Usuario usuario : evento.getVisitantes()) {
+    		usuario.getEventos().remove(evento);
+    		
+    	}
+    	
+    	Usuario anfitrion = evento.getAnfitrion();
+    	
+    	anfitrion.getEventos().remove(evento);   
+    	
+    	usuarioRepositorio.flush();
         eventoRepositorio.deleteById(id);
 
     }

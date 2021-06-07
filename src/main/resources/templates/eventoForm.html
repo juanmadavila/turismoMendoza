@@ -55,7 +55,7 @@
                         <h4 class="text-center mb-4">Anfitrión: <strong th:text="${usuario.name}"></strong></h4>
                         <form th:action="@{/evento/save}" th:object="${evento}" method="POST">
                             <h5 th:text="${error}"></h5>
-                            <input type="hidden" th:field="*{id}" th:value="*{id}"/>
+                            <input th:if="${evento.id != null}" type="hidden" th:field="*{id}" th:value="*{id}"/>
                             <input type="hidden" id="lat" th:field="*{lat}" th:value="*{lat}"/>
                             <input type="hidden" id="lon" th:field="*{lon}" th:value="*{lon}"/>
                             <div th:if="*{id == null}" class="form-group">

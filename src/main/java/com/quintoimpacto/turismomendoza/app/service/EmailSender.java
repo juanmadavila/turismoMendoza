@@ -37,16 +37,18 @@ public class EmailSender {
 
     private void init() {
 
-        Properties properties = new Properties();
-
         Properties prop = new Properties();
         prop.put("mail.smtp.auth", true);
         prop.put("mail.smtp.starttls.enable", "true");
         prop.put("mail.smtp.host", "smtp.gmail.com");
         prop.put("mail.smtp.port", 587);
         prop.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        
+//        System.out.println(mailFrom);
+//        System.out.println(mailPassword);
 
-        session = Session.getInstance(properties, new javax.mail.Authenticator() {
+
+        session = Session.getInstance(prop, new javax.mail.Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(mailFrom, mailPassword);
@@ -80,7 +82,7 @@ public class EmailSender {
                 + "' organizado por " + evento.getAnfitrion().getName() + " para el día "
                 + evento.getFecha().toString() + "ha sido " + conclusion;
 
-        enviar(mailFrom, "Invitación del evento", cuerpo);
+        enviar(usuario.getEmail(), "Invitación del evento", cuerpo);
 
     }
 
@@ -94,9 +96,9 @@ public class EmailSender {
             String cuerpo = "Hola " + usuario.getName() + "! \n"
                     + "El anfitrión del evento " + evento.getNombre()
                     + " de la fecha " + evento.getFecha() + ", " + evento.getHorario()
-                    + " ha finalizado el mismo. puto pal lobby";
+                    + " ha finalizado el mismo. no me la canceleiner pa";
 
-            enviar(mailFrom, "Evento finalizado", cuerpo);
+            enviar(usuario.getEmail(), "Evento finalizado", cuerpo);
         }
 
     }
