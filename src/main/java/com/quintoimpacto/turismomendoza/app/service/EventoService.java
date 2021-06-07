@@ -5,6 +5,7 @@ import com.quintoimpacto.turismomendoza.app.dao.EventoRepositorio;
 import com.quintoimpacto.turismomendoza.app.dao.UsuarioRepositorio;
 import com.quintoimpacto.turismomendoza.app.entity.Evento;
 import com.quintoimpacto.turismomendoza.app.entity.Usuario;
+import com.quintoimpacto.turismomendoza.app.enums.Acceso;
 import com.quintoimpacto.turismomendoza.app.error.WebException;
 import com.quintoimpacto.turismomendoza.app.models.EventoModel;
 import java.util.ArrayList;
@@ -27,18 +28,28 @@ public class EventoService {
 
     @Transactional
     public Evento save(EventoModel model) throws WebException {
-
+ 
         validar(model);
 
         Evento entity = eventoConverter.modelToEntity(model);
 
-//        if (findById(model.getId()) == null) {
-//            entity.setVisitantes(new ArrayList<>());
-//            entity.setPendientes(new ArrayList<>());
-//        }
-        entity.setHabilitado(true);
+        // Por si al editarlo cambia de privado a público
+        if (entity.getId() != null) {
+            //Si la lista de pendientes tiene al menos un usuario, significa que era o es privado
+            if (!entity.getPendientes().isEmpty() && entity.getAcceso().equals(Acceso.PUBLICO)) {
+                for (Usuario usuario : entity.getPendientes()) {
+                    if (!usuario.getEventos().contains(entity)) {
+                        usuario.getEventos().add(entity);
+                    }
+                }
+                entity.getVisitantes().addAll(entity.getPendientes());
+                entity.getPendientes().clear();
+            }
+        }
 
-        return eventoRepositorio.saveAndFlush(entity);
+        entity.setHabilitado(true);
+        
+        return eventoRepositorio.save(entity);
     }
 
     @Transactional(rollbackFor = {Exception.class, WebException.class})

@@ -35,18 +35,12 @@ public class EventoConverter extends Converter<EventoModel, Evento> {
         }
         try {
             BeanUtils.copyProperties(model, entity);
+
             Usuario anfitrion = usuarioConverter.modelToEntity(model.getAnfitrion());
             entity.setAnfitrion(anfitrion);
-//            entity.setDescripcion(model.getDescripcion());
-//            entity.setFecha(model.getFecha());
-//            entity.setHabilitado(model.getHabilitado());
-//            entity.setLat(model.getLat());
-//            entity.setLon(model.getLon());
-//            entity.setNombre(model.getNombre());
-//            entity.setTipoDeEvento(model.getTipoDeEvento());
+
             if (entity.getVisitantes() == null) entity.setVisitantes(new ArrayList<>());
-            
-//            BeanUtils.copyProperties(entity, model);
+
         } catch (Exception e) {
             throw new WebException(
                     "No se pudo convertir de modelo a entidad: " + model.toString() + " " + entity.toString());

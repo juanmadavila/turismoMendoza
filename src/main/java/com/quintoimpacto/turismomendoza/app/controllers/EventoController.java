@@ -51,7 +51,7 @@ public class EventoController {
     @GetMapping("/form")
     public String form(HttpSession session, ModelMap modelo, @RequestParam(required = false) String id) throws WebException {
         EventoModel eventoModel = new EventoModel();
-        if(id != null) {
+        if (id != null) {
             Evento evento = eventoService.findById(id);
             eventoModel = eventoConverter.entityToModel(evento);
         }
@@ -80,10 +80,12 @@ public class EventoController {
             eventoModel.setTipoDeEvento(tipoDeEvento);
             eventoModel.setAcceso(acceso);
             eventoModel.setHorario(horario);
-            System.out.println(eventoModel.getHorario());
             Evento evento = eventoService.save(eventoModel);
-            usuario.getEventos().add(evento);
-            usuarioService.save(usuario);
+            if (!usuarioService.contains(usuario, evento)) {
+                usuario.getEventos().add(evento);
+            }
+            
+            session.setAttribute("usuariosession", usuarioService.save(usuario));
             return REDIRECT_LABEL;
 
         } catch (WebException e) {
@@ -141,32 +143,31 @@ public class EventoController {
         } catch (WebException ex) {
             Logger.getLogger(EventoController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return REDIRECT_PARTICIPANTES_LABEL("idEvento", idEvento);
     }
-    
+
     @GetMapping("/borrar-invitacion")
     public String borrarInvitacion(@RequestParam String idEvento, @RequestParam String idUsuario) {
         eventoService.borrarInvitacion(idEvento, idUsuario);
-        
+
         return REDIRECT_PARTICIPANTES_LABEL("idEvento", idEvento);
     }
-    
+
 //    @GetMapping("/search")
 //    public String findBy(@RequestParam String q, ModelMap modelo){
 //    	modelo.addAttribute("eventos", eventoService.findBy(q));
 //        return "";
 //    }
 //    
-    
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public String search (Model model,HttpSession session , @RequestParam String q) {
-    	
-    	Usuario usuario = (Usuario) session.getAttribute("usuariosession");
-    	model.addAttribute("eventos" , eventoService.findBy(q));
+    public String search(Model model, HttpSession session, @RequestParam String q) {
+
+        Usuario usuario = (Usuario) session.getAttribute("usuariosession");
+        model.addAttribute("eventos", eventoService.findBy(q));
         model.addAttribute("usuario", usuario);
-    	
-    	return INDEX_LABEL;
+
+        return INDEX_LABEL;
     }
 
     private void loadModel(ModelMap modelo, EventoModel eventoModel, String action) {

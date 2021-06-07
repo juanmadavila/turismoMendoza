@@ -46,8 +46,8 @@ public class UsuarioService implements UserDetailsService {
     }
 
     @Transactional
-    public void save(Usuario usuario) {
-        usuarioRepositorio.save(usuario);
+    public Usuario save(Usuario usuario) {
+        return usuarioRepositorio.save(usuario);
     }
 
     @Transactional
@@ -65,6 +65,14 @@ public class UsuarioService implements UserDetailsService {
 
     public List<Usuario> findAll() {
         return (List<Usuario>) usuarioRepositorio.findAll();
+    }
+    
+    public boolean contains(Usuario usuario, Evento evento) {
+        for (Evento miEvento : usuario.getEventos()) {
+            if (evento.getId().equals(miEvento.getId())) return true;
+        }
+        
+        return false;
     }
 
     @Transactional

@@ -34,17 +34,6 @@ public class UsuarioController {
         return USUARIO_LIST_LABEL;
     }
 
-    @GetMapping("/register")
-    public String registro(ModelMap model) {
-        return "register.html";
-    }
-
-    @GetMapping("/userForm")
-    public String userForm(ModelMap model) {
-
-        return "userForm.html";
-    }
-
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable String id, RedirectAttributes flash) {
 

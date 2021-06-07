@@ -98,11 +98,11 @@
                                     <div class="d-flex flex-row justify-content-center">
                                         <div class="mr-3">
                                             <!--<label>Desde</label>-->
-                                            <input type="text" name="horario" th:value="*{horario.split(' - ')[0]}" class="form-control" id="desde" placeholder="Desde">
+                                            <input type="text" name="horario" th:value="*{horario != null ? horario.split(' - ')[0] : ''}" class="form-control" id="desde" placeholder="Desde">
                                         </div>
                                         <div class="ml-1">
                                             <!--<label>Hasta</label>-->
-                                            <input type="text" name="horario" th:value="*{horario.split(' - ')[1]}" class="form-control" id="hasta" onchange="join()" placeholder="Hasta">
+                                            <input type="text" name="horario" th:value="*{horario != null ? horario.split(' - ')[1] : ''}" class="form-control" id="hasta" onchange="join()" placeholder="Hasta">
                                         </div>
                                     </div>
                                 </div>
