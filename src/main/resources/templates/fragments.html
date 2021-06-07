@@ -236,7 +236,7 @@ and open the template in the editor.
                     <a th:if="${evento.anfitrion.id == usuario.id}" th:href="@{/evento/participantes(idEvento=${evento.id})}" style="width: 100%" class="btn btn-success m-3">Detalles</a>
                 </div>
                 <div class="d-flex flex-row w-25">
-                    <a th:if="${usuario.rol.name() == 'ADMIN' or evento.anfitrion.id eq usuario.id}" th:href="@{/evento/editar(id=${__evento.id__})}"  style="width: 100%" class="btn btn-warning m-3">Editar</a>
+                    <a th:if="${usuario.rol.name() == 'ADMIN' or evento.anfitrion.id eq usuario.id}" th:href="@{/evento/form(id=${__evento.id__})}"  style="width: 100%" class="btn btn-warning m-3">Editar</a>
                     <a th:if="${usuario.rol.name() == 'ADMIN' or evento.anfitrion.id eq usuario.id}" th:href="@{/evento/eliminar(id=${__evento.id__})}" style="width: 100%" class="btn btn-danger m-3">Eliminar</a>
                 </div>
             </div>

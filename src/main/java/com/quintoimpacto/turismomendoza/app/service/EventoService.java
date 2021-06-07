@@ -32,10 +32,11 @@ public class EventoService {
 
         Evento entity = eventoConverter.modelToEntity(model);
 
-        if (findById(model.getId()) == null) {
-            entity.setHabilitado(true);
-            entity.setVisitantes(new ArrayList<>());
-        }
+//        if (findById(model.getId()) == null) {
+//            entity.setVisitantes(new ArrayList<>());
+//            entity.setPendientes(new ArrayList<>());
+//        }
+        entity.setHabilitado(true);
 
         return eventoRepositorio.saveAndFlush(entity);
     }

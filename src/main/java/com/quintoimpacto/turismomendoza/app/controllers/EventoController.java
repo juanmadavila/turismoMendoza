@@ -1,5 +1,6 @@
 package com.quintoimpacto.turismomendoza.app.controllers;
 
+import com.quintoimpacto.turismomendoza.app.converters.EventoConverter;
 import com.quintoimpacto.turismomendoza.app.converters.UsuarioConverter;
 import com.quintoimpacto.turismomendoza.app.entity.Evento;
 import com.quintoimpacto.turismomendoza.app.entity.Usuario;
@@ -45,10 +46,16 @@ public class EventoController {
     private final UsuarioConverter usuarioConverter;
     private final EventoService eventoService;
     private final UsuarioService usuarioService;
+    private final EventoConverter eventoConverter;
 
     @GetMapping("/form")
-    public String form(HttpSession session, ModelMap modelo) {
-        modelo.addAttribute(EVENTO_LABEL, new EventoModel());
+    public String form(HttpSession session, ModelMap modelo, @RequestParam(required = false) String id) throws WebException {
+        EventoModel eventoModel = new EventoModel();
+        if(id != null) {
+            Evento evento = eventoService.findById(id);
+            eventoModel = eventoConverter.entityToModel(evento);
+        }
+        modelo.addAttribute(EVENTO_LABEL, eventoModel);
         Usuario usuario = (Usuario) session.getAttribute("usuariosession");
         modelo.put("usuario", usuario);
         return EVENTO_FORM_LABEL;
