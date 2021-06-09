@@ -77,10 +77,10 @@ public class EmailSender {
     public void sendAcceptedUser(Usuario usuario, Evento evento, boolean aceptado) throws WebException, Exception {
 
         String conclusion = aceptado ? "aceptada" : "rechazada por feo jeje salu2";
-        String cuerpo = "Hola " + usuario.getName() + "! \n"
+        String cuerpo = "<h1>¡Hola " + usuario.getName() + "! </h1>\n"
                 + "La solicitud de asistencia al evento '" + evento.getNombre()
                 + "' organizado por " + evento.getAnfitrion().getName() + " para el día "
-                + evento.getFecha().toString() + "ha sido " + conclusion;
+                + evento.getFecha().toString() + " ha sido " + conclusion;
 
         enviar(usuario.getEmail(), "Invitación del evento", cuerpo);
 

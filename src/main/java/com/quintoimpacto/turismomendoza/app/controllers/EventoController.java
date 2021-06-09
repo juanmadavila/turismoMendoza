@@ -101,8 +101,9 @@ public class EventoController {
 
     @GetMapping("/eliminar")
     public String eliminarEvento(HttpSession session,@RequestParam(required = true) String id) throws WebException {
-        eventoService.eliminar(id);
+        Evento evento = eventoService.eliminar(id);
         Usuario usuario = (Usuario) session.getAttribute("usuariosession");
+        usuario.getEventos().remove(evento);
         session.setAttribute("usuariosession", usuarioService.save(usuario));
         return REDIRECT_LABEL;
     }
@@ -162,14 +163,14 @@ public class EventoController {
 //        return "";
 //    }
 //    
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public String search(Model model, HttpSession session, @RequestParam String q) {
+    @GetMapping("/search")
+    public String search(Model model, HttpSession session, @RequestParam String q, @RequestParam(required = false) String page) {
 
         Usuario usuario = (Usuario) session.getAttribute("usuariosession");
         model.addAttribute("eventos", eventoService.findBy(q));
         model.addAttribute("usuario", usuario);
 
-        return INDEX_LABEL;
+        return page != null ? page : INDEX_LABEL;
     }
 
     private void loadModel(ModelMap modelo, EventoModel eventoModel, String action) {

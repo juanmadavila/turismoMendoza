@@ -19,6 +19,9 @@ public interface EventoRepositorio extends JpaRepository<Evento, String> {
 
     @Query(value = "SELECT * FROM Evento e INNER JOIN Usuario u ON e.anfitrion_id = u.id WHERE e.habilitado = true AND (e.nombre LIKE :q OR e.fecha LIKE :q OR u.name LIKE :q)", nativeQuery = true)
     public List<Evento> findBy(@Param("q") String q);
+    
+    @Query(value = "SELECT * FROM Evento e INNER JOIN Usuario u ON e.anfitrion_id = u.id WHERE e.habilitado = true AND (e.nombre LIKE :q OR e.fecha LIKE :q OR u.name LIKE :q) AND u.id LIKE :idAnfitrion", nativeQuery = true)
+    public List<Evento> findBy(@Param("q") String q, @Param("idAnfitrion") String idAnfitrion);
 	 
 	 //    @Query("SELECT e FROM Evento e")
 //    public Page<Evento> findAll(Pageable pageable);

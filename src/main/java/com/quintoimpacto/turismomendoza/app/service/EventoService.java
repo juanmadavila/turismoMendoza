@@ -28,7 +28,7 @@ public class EventoService {
 
     @Transactional
     public Evento save(EventoModel model) throws WebException {
- 
+
         validar(model);
 
         Evento entity = eventoConverter.modelToEntity(model);
@@ -48,7 +48,7 @@ public class EventoService {
         }
 
         entity.setHabilitado(true);
-        
+
         return eventoRepositorio.save(entity);
     }
 
@@ -90,21 +90,22 @@ public class EventoService {
     }
 
     @Transactional(rollbackFor = {Exception.class, WebException.class})
-    public void eliminar(String id) throws WebException {
-    	
-    	Evento evento = findById(id);
-    	for(Usuario usuario : evento.getVisitantes()) {
-    		usuario.getEventos().remove(evento);
-    		
-    	}
-    	
-    	Usuario anfitrion = evento.getAnfitrion();
-    	
-    	anfitrion.getEventos().remove(evento);   
-    	
-    	usuarioRepositorio.flush();
-        eventoRepositorio.deleteById(id);
+    public Evento eliminar(String id) throws WebException {
 
+        Evento evento = findById(id);
+        for (Usuario usuario : evento.getVisitantes()) {
+            usuario.getEventos().remove(evento);
+
+        }
+
+        Usuario anfitrion = evento.getAnfitrion();
+
+        anfitrion.getEventos().remove(evento);
+
+        usuarioRepositorio.flush();
+        eventoRepositorio.delete(evento);
+        
+        return evento;
     }
 
     public List<Evento> buscarHabilitados() {
@@ -137,6 +138,33 @@ public class EventoService {
 
     public List<Evento> findBy(String q) {
         return eventoRepositorio.findBy("%" + q + "%");
+    }
+
+    public List<Evento> findBy(String q, String idAnfitrion) {
+        return eventoRepositorio.findBy("%" + q + "%", idAnfitrion);
+    }
+
+    public List<Evento> findByIdUsuario(String q, String idUsuario) {
+
+        q = q.toLowerCase();
+
+        Usuario usuario = usuarioRepositorio.getOne(idUsuario);
+        List<Evento> misEventos = new ArrayList<>();
+
+        for (Evento evento : usuario.getEventos()) {
+            String nombre = evento.getNombre().toLowerCase();
+            String fecha = evento.getFecha().toString().toLowerCase();
+            String anfitrion = evento.getAnfitrion().getName().toLowerCase();
+
+            if (nombre.contains(q)
+                    || fecha.contains(q)
+                    || anfitrion.contains(q)) {
+
+                misEventos.add(evento);
+            }
+        }
+
+        return misEventos;
     }
 
     private void validar(EventoModel model) throws WebException {

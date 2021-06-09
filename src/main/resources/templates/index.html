@@ -20,22 +20,38 @@
         <!-- Custom styles for this template-->
         <link href="/css/sb-admin-2.min.css" rel="stylesheet">
         <link href="/css/sb-admin-2.css" rel="stylesheet">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 
     </head>
     <style>
+        
         .mountain {
-            clip-path: polygon(0% 0%, 100% 0%, 100% 6%, 5% 20%, 5% 31%, 50% 40%, 100% 50%, 50% 60%,100% 70%,50% 80%,100% 90%,50% 100%, 0% 100%);
+            clip-path: polygon(0% 0%, 100% 0%, 100% 6%, 5% 20%, 5% 31%, 50% 38%, 100% 45.8%, 100% 60%,100% 70%,100% 80%,100% 90%,100% 100%, 0% 100%);
         }        
         .mountain-map {
-            /*position: absolute;*/
             clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% -50%);
         }
+        
         .btnCrear {
-            margin-left: 5%;
+            margin-left: 1.15%;
             margin-top: 5%;
-            color: black
+            color: black;
+            clip-path: polygon(0.3% 32.5%, 99% 1.5%, 99% 90%, 0% 57%);
+            margin-top: 69px; 
+            width: 14.2%;
+            height: 500px;
+            z-index: 1; 
+            position: absolute;
+            background-color: grey;
+            align-content: center;
+            border: 2px solid red;
         }
+
+        .btnCrear a {
+            padding-top: 115%;
+        }
+  
+
     </style>
 
     <body id="page-top">
@@ -43,8 +59,15 @@
         <!-- Page Wrapper -->
         <div id="wrapper">
 
-            <!-- Sidebar -->
-            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion mountain" id="accordionSidebar">
+            <div class="btnCrear">
+                <a type="button" class="btn btn-primary  w-100 h-100 " th:href="@{/evento/form}">
+                    <h5>
+                        Crear evento
+                    </h5>
+                </a>
+            </div>
+
+            <ul class="navbar-nav bg-gradient-info sidebar sidebar-dark accordion mountain" id="accordionSidebar">
 
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
                     <div class="sidebar-brand-icon rotate-n-15">
@@ -52,9 +75,6 @@
                     </div>
                     <div class="sidebar-brand-text mx-3">Mendoza</div>
                 </a>
-                <div class="btnCrear">
-                    <a type="button" class="btn btn-secondary" th:href="@{/evento/form}">Crear evento</a>
-                </div>
 
                 <!--                 Sidebar - Brand 
                                  Divider 
@@ -184,7 +204,7 @@
                     <div class="container-fluid">
 
                         <div style="border-radius: 10px" class="mountain-map" id="map"></div>
-<!--                        <div id="eventosDiv"></div>-->
+                        <!--                        <div id="eventosDiv"></div>-->
                         <div th:replace="fragments :: eventos"></div>
 
                         <div class="d-none" th:each="json : ${eventosJson}">
@@ -239,74 +259,59 @@
         </div>
 
         <!-- Bootstrap core JavaScript-->
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-        <!-- Core plugin JavaScript-->
-        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-        <!-- Custom scripts for all pages-->
-        <script src="js/sb-admin-2.min.js"></script>
-
-        <!-- Page level plugins -->
-        <script src="vendor/chart.js/Chart.min.js"></script>
-
-        <!-- Page level custom scripts -->
-        <script src="js/demo/chart-area-demo.js"></script>
-        <script src="js/demo/chart-pie-demo.js"></script>
 
         <script>
-                                        let map;
-                                        var markers = [];
+            let map;
+            var markers = [];
 
-                                        const jsons = document.querySelectorAll('.json');
-                                        jsons.forEach(json => {
-                                            markers.push(JSON.parse(json.value));
-                                        });
+            const jsons = document.querySelectorAll('.json');
+            jsons.forEach(json => {
+                markers.push(JSON.parse(json.value));
+            });
 
-                                        function initMap() {
-                                            map = new google.maps.Map(document.getElementById("map"), {
-                                                center: {lat: -32.8933144, lng: -68.8490985},
-                                                zoom: 9
-                                            });
-                                            var infoWindow = new google.maps.InfoWindow();
-                                            for (i = 0; i < markers.length; i++) {
-                                                var position = new google.maps.LatLng(markers[i].lat, markers[i].lon);
-                                                marker = new google.maps.Marker({
-                                                    position: position,
-                                                    map: map,
-                                                    title: markers[i].nombre
-                                                });
-                                                const infoWindowContent =
-                                                        '<div class="info_content">' +
-                                                        '<div class="d-flex">' +
-                                                        `<img style="width:30px; height:30px; border-radius:50%; margin-right:2px" src="${markers[i].urlPhotoAnfitrion}">` +
-                                                        `<h4>${markers[i].nombreAnfitrion}</h4>` +
-                                                        '</div>' +
-                                                        `<h5>${markers[i].nombre} - ${markers[i].tipo}</h5>` +
-                                                        `<p>${markers[i].fecha}</p>` +
-                                                        `<p>${markers[i].descripcion}</p>` +
-                                                        '</div>'
-                                                        ;
-                                                google.maps.event.addListener(marker, 'click', (function (marker, i) {
-                                                    return function () {
-                                                        infoWindow.setContent(infoWindowContent);
-                                                        infoWindow.open(map, marker);
-                                                    }
-                                                })(marker, i));
-                                                // Center the map to fit all markers on the screen
-                                            }
-                                        }
+            function initMap() {
+                map = new google.maps.Map(document.getElementById("map"), {
+                    center: {lat: -32.8933144, lng: -68.8490985},
+                    zoom: 9
+                });
+                var infoWindow = new google.maps.InfoWindow();
+                for (i = 0; i < markers.length; i++) {
+                    var position = new google.maps.LatLng(markers[i].lat, markers[i].lon);
+                    marker = new google.maps.Marker({
+                        position: position,
+                        map: map,
+                        title: markers[i].nombre
+                    });
+                    const infoWindowContent =
+                            '<div class="info_content">' +
+                            '<div class="d-flex">' +
+                            `<img style="width:30px; height:30px; border-radius:50%; margin-right:2px" src="${markers[i].urlPhotoAnfitrion}">` +
+                            `<h4>${markers[i].nombreAnfitrion}</h4>` +
+                            '</div>' +
+                            `<h5>${markers[i].nombre} - ${markers[i].tipo}</h5>` +
+                            `<p>${markers[i].fecha}</p>` +
+                            `<p>${markers[i].descripcion}</p>` +
+                            '</div>'
+                            ;
+                    google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                        return function () {
+                            infoWindow.setContent(infoWindowContent);
+                            infoWindow.open(map, marker);
+                        }
+                    })(marker, i));
+                    // Center the map to fit all markers on the screen
+                }
+            }
 
-                                        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-                                            infoWindow.setPosition(pos);
-                                            infoWindow.setContent(
-                                                    browserHasGeolocation
-                                                    ? "Error: The Geolocation service failed."
-                                                    : "Error: Your browser doesn't support geolocation."
-                                                    );
-                                            infoWindow.open(map);
-                                        }
+            function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+                infoWindow.setPosition(pos);
+                infoWindow.setContent(
+                        browserHasGeolocation
+                        ? "Error: The Geolocation service failed."
+                        : "Error: Your browser doesn't support geolocation."
+                        );
+                infoWindow.open(map);
+            }
 
 
 
@@ -315,6 +320,8 @@
         <script
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCV0g9AG_ll8UhZ1coTbed0HL2rVpQaXWI&callback=initMap&libraries=&v=weekly"
         async></script>
+
+        <div th:replace="fragments :: scripts"></div>
 
     </body>
 
